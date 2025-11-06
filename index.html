@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hamburger Menu Fix</title>
+  <title>ハンバーガーメニュー対応</title>
   <style>
     body {
       background: #f7f7f7;
@@ -26,8 +26,50 @@
       z-index: 10;
     }
 
-    /* ▼ ここ重要：モバイル時に非表示 */
+    h1 {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #000;
+    }
+
+    /* ハンバーガーボタン */
+    #menuBtn {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ▼ スマホサイズでの表示切替 */
     @media (max-width: 768px) {
+      #menuBtn {
+        display: block;
+      }
+
       .nav-links {
         display: none;
         flex-direction: column;
@@ -38,48 +80,61 @@
         width: 200px;
         border-radius: 30px;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-        padding: 0.5rem 0;
+        padding: 10px 0;
+        animation: fadeIn 0.3s ease;
       }
+
       .nav-links.open {
-        display: flex; /* ☰ボタンでtoggleする時にだけ表示 */
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
     }
 
     main {
       margin-top: 100px;
+      max-width: 700px;
+      margin-inline: auto;
+      background: #fff;
+      border-radius: 50px;
+      padding: 30px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 class="text-xl font-bold text-gray-800">My Site</h1>
+    <h1>My Site</h1>
     <nav>
-      <!-- ☰ボタンはPCでは非表示 -->
-      <button id="menuBtn" class="text-3xl md:hidden focus:outline-none">☰</button>
-      <div id="navLinks" class="nav-links flex gap-6 text-gray-700 font-semibold md:flex">
-        <a href="#" class="hover:text-black">ホーム</a>
-        <a href="#" class="hover:text-black">プロジェクト</a>
-        <a href="#" class="hover:text-black">このサイトについて</a>
+      <button id="menuBtn">☰</button>
+      <div id="navLinks" class="nav-links">
+        <a href="#">ホーム</a>
+        <a href="#">プロジェクト</a>
+        <a href="#">このサイトについて</a>
       </div>
     </nav>
   </header>
 
-  <main class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-[50px] shadow-md">
-    <h2 class="text-2xl font-bold mb-4">メインコンテンツ</h2>
-    <p>スマホでは ☰ を押すとメニューが出て、もう一度押すか外をクリックすると閉じます。</p>
+  <main>
+    <h2>メインコンテンツ</h2>
+    <p>スマホでは ☰ を押すとメニューが開き、もう一度押すか外をタップすると閉じます。</p>
   </main>
 
   <script>
     const menuBtn = document.getElementById("menuBtn");
     const navLinks = document.getElementById("navLinks");
 
-    // 開閉トグル
-    menuBtn.addEventListener("click", () => {
+    // メニュー開閉
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // 外クリック処理に干渉しない
       navLinks.classList.toggle("open");
     });
 
-    // 外をクリックしたら閉じる
-    document.addEventListener("click", e => {
+    // 外側をクリックしたら閉じる
+    document.addEventListener("click", (e) => {
       if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
         navLinks.classList.remove("open");
       }
