@@ -1,34 +1,111 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Scratch風デザイン サイト</title>
-  <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cool Scratch Style Site</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #39f, #6cf);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    header {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      background: #ffcc00;
+    }
+    .menu-btn {
+      display: none;
+    }
+    .nav-links a {
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .nav-links a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #ffcc00;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      }
+      .menu-btn {
+        display: block;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+    }
+    main section {
+      display: none;
+    }
+    main section.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <header class="scratch-header">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Scratch_cat.svg" alt="Scratch Cat" class="scratch-logo">
-    <span class="scratch-title">Scratch風デザイン</span>
+  <header class="flex justify-between items-center px-6 py-3">
+    <h1 class="text-2xl font-extrabold text-blue-700 drop-shadow">Scratch風サイト</h1>
     <nav>
-      <a href="#" class="scratch-nav-link">プロジェクト</a>
-      <a href="#" class="scratch-nav-link">アイデア</a>
-      <a href="#" class="scratch-nav-link">コミュニティ</a>
+      <button id="menuBtn" class="menu-btn text-3xl">☰</button>
+      <div id="navLinks" class="nav-links flex gap-6 text-lg font-bold text-blue-800">
+        <a href="#" data-target="home">ホーム</a>
+        <a href="#" data-target="projects">プロジェクト</a>
+        <a href="#" data-target="about">このサイトについて</a>
+      </div>
     </nav>
   </header>
-  <main>
-    <section class="scratch-block-area">
-      <div class="scratch-block motion">10歩動かす</div>
-      <div class="scratch-block looks">「こんにちは」と言う</div>
-      <div class="scratch-block control">もし◯◯なら</div>
+
+  <main class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-2xl">
+    <section id="home" class="active">
+      <h2 class="text-2xl font-bold mb-4 text-blue-600">🏠 ホーム</h2>
+      <p>ようこそ！このサイトは Scratch 風デザインのカッコいい実験ページです。</p>
     </section>
-    <section>
-      <h2>Scratchについて</h2>
-      <p>Scratchはブロックを並べて組み合わせることでプログラムを作る、世界的に人気のある教育用プログラミングツールです。</p>
+
+    <section id="projects">
+      <h2 class="text-2xl font-bold mb-4 text-blue-600">🧩 プロジェクト</h2>
+      <p>ここにあなたの作品やアプリ、ゲームを紹介できます。</p>
+    </section>
+
+    <section id="about">
+      <h2 class="text-2xl font-bold mb-4 text-blue-600">💡 このサイトについて</h2>
+      <p>Scratchのようにカラフルで、影のあるデザインを目指しました。メニューで切り替えられます！</p>
     </section>
   </main>
-  <footer class="scratch-footer">
-    <small>© 2025 Scratch風デザイン サイト</small>
-  </footer>
+
+  <script>
+    // メニュー切り替え
+    const links = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('main section');
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.dataset.target;
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+        document.getElementById('navLinks').classList.remove('open');
+      });
+    });
+
+    // ハンバーガーメニュー
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+  </script>
 </body>
 </html>
