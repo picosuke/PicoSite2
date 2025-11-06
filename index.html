@@ -3,53 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Picosite2</title>
+  <title>Simple Clean Site</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      background: linear-gradient(135deg, #39f, #6cf);
-      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      font-family: "Segoe UI", sans-serif;
     }
+
     header {
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      background: #ffcc00;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 0 0 1rem 1rem;
     }
-    .menu-btn {
-      display: none;
-    }
+
     .nav-links a {
-      transition: transform 0.1s, box-shadow 0.1s;
+      transition: background 0.2s, transform 0.1s;
     }
+
     .nav-links a:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 0.5rem;
+      transform: translateY(-1px);
     }
+
     @media (max-width: 768px) {
       .nav-links {
         display: none;
         flex-direction: column;
-        background: #ffcc00;
+        background: #fff;
         position: absolute;
         top: 60px;
-        right: 0;
-        width: 200px;
-        border-radius: 0 0 12px 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      }
-      .menu-btn {
-        display: block;
+        right: 1rem;
+        width: 180px;
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        padding: 0.5rem 0;
       }
       .nav-links.open {
         display: flex;
       }
     }
+
     main section {
       display: none;
     }
     main section.active {
       display: block;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.2s ease;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
@@ -57,54 +60,63 @@
   </style>
 </head>
 <body>
-  <header class="flex justify-between items-center px-6 py-3">
-    <h1 class="text-2xl font-extrabold text-blue-700 drop-shadow">Scratch風サイト</h1>
+  <header class="flex justify-between items-center px-6 py-3 relative">
+    <h1 class="text-xl font-bold text-gray-800">My Clean Site</h1>
     <nav>
-      <button id="menuBtn" class="menu-btn text-3xl">☰</button>
-      <div id="navLinks" class="nav-links flex gap-6 text-lg font-bold text-blue-800">
-        <a href="#" data-target="home">ホーム</a>
-        <a href="#" data-target="projects">プロジェクト</a>
-        <a href="#" data-target="about">このサイトについて</a>
+      <button id="menuBtn" class="text-3xl md:hidden focus:outline-none">☰</button>
+      <div id="navLinks" class="nav-links flex gap-6 text-gray-700 font-semibold">
+        <a href="#" data-target="home" class="px-2 py-1">ホーム</a>
+        <a href="#" data-target="projects" class="px-2 py-1">プロジェクト</a>
+        <a href="#" data-target="about" class="px-2 py-1">このサイトについて</a>
       </div>
     </nav>
   </header>
 
-  <main class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-2xl">
+  <main class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md">
     <section id="home" class="active">
-      <h2 class="text-2xl font-bold mb-4 text-blue-600">🏠 ホーム</h2>
-      <p>ようこそ！このサイトは Scratch 風デザインのカッコいい実験ページです。</p>
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">🏠 ホーム</h2>
+      <p class="text-gray-700">ようこそ！シンプルで見やすいクリーンデザインのサイトです。</p>
     </section>
 
     <section id="projects">
-      <h2 class="text-2xl font-bold mb-4 text-blue-600">🧩 プロジェクト</h2>
-      <p>ここにあなたの作品やアプリ、ゲームを紹介できます。</p>
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">🧩 プロジェクト</h2>
+      <p class="text-gray-700">ここにはあなたの作品を表示できます。</p>
     </section>
 
     <section id="about">
-      <h2 class="text-2xl font-bold mb-4 text-blue-600">💡 このサイトについて</h2>
-      <p>Scratchのようにカラフルで、影のあるデザインを目指しました。メニューで切り替えられます！</p>
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">💡 このサイトについて</h2>
+      <p class="text-gray-700">黒と白を基調としたシンプルなデザインです。角を丸くして柔らかい印象にしています。</p>
     </section>
   </main>
 
   <script>
-    // メニュー切り替え
+    // ページ切り替え
     const links = document.querySelectorAll('.nav-links a');
     const sections = document.querySelectorAll('main section');
+    const navLinks = document.getElementById('navLinks');
+    const menuBtn = document.getElementById('menuBtn');
+
     links.forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
         const target = link.dataset.target;
         sections.forEach(sec => sec.classList.remove('active'));
         document.getElementById(target).classList.add('active');
-        document.getElementById('navLinks').classList.remove('open');
+        // モバイル時にメニュー閉じる
+        navLinks.classList.remove('open');
       });
     });
 
-    // ハンバーガーメニュー
-    const menuBtn = document.getElementById('menuBtn');
-    const navLinks = document.getElementById('navLinks');
+    // ハンバーガー開閉
     menuBtn.addEventListener('click', () => {
       navLinks.classList.toggle('open');
+    });
+
+    // メニュー外クリックで閉じる
+    document.addEventListener('click', e => {
+      if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+        navLinks.classList.remove('open');
+      }
     });
   </script>
 </body>
