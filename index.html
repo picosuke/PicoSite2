@@ -3,24 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Clean Site</title>
+  <title>Hamburger Menu Fix</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
       background: #f7f7f7;
       font-family: "Segoe UI", sans-serif;
       margin: 0;
-      padding: 0;
     }
 
-    /* ヘッダー設定 */
     header {
       position: relative;
-      top: 20px; /* 少し下げる */
-      margin: 0 auto;
+      top: 20px;
       width: calc(100% - 40px);
-      background: #ffffff;
-      border-radius: 50px; /* ← 全角をしっかり丸く */
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 50px;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
       padding: 12px 24px;
       display: flex;
@@ -29,17 +27,7 @@
       z-index: 10;
     }
 
-    .nav-links a {
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    .nav-links a:hover {
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 0.5rem;
-      transform: translateY(-1px);
-    }
-
-    /* モバイルメニュー */
+    /* ▼ ここ重要：モバイル時に非表示 */
     @media (max-width: 768px) {
       .nav-links {
         display: none;
@@ -54,85 +42,47 @@
         padding: 0.5rem 0;
       }
       .nav-links.open {
-        display: flex;
+        display: flex; /* ☰ボタンでtoggleする時にだけ表示 */
       }
     }
 
     main {
-      margin-top: 80px; /* ヘッダーの下に余白 */
-    }
-
-    main section {
-      display: none;
-    }
-
-    main section.active {
-      display: block;
-      animation: fadeIn 0.2s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
+      margin-top: 100px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 class="text-xl font-bold text-gray-800">My Clean Site</h1>
+    <h1 class="text-xl font-bold text-gray-800">My Site</h1>
     <nav>
+      <!-- ☰ボタンはPCでは非表示 -->
       <button id="menuBtn" class="text-3xl md:hidden focus:outline-none">☰</button>
-      <div id="navLinks" class="nav-links flex gap-6 text-gray-700 font-semibold">
-        <a href="#" data-target="home" class="px-2 py-1">ホーム</a>
-        <a href="#" data-target="projects" class="px-2 py-1">プロジェクト</a>
-        <a href="#" data-target="about" class="px-2 py-1">このサイトについて</a>
+      <div id="navLinks" class="nav-links flex gap-6 text-gray-700 font-semibold md:flex">
+        <a href="#" class="hover:text-black">ホーム</a>
+        <a href="#" class="hover:text-black">プロジェクト</a>
+        <a href="#" class="hover:text-black">このサイトについて</a>
       </div>
     </nav>
   </header>
 
   <main class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-[50px] shadow-md">
-    <section id="home" class="active">
-      <h2 class="text-2xl font-bold mb-4 text-gray-800">🏠 ホーム</h2>
-      <p class="text-gray-700">ようこそ！角がすべて丸くなったシンプルでクリーンなサイトです。</p>
-    </section>
-
-    <section id="projects">
-      <h2 class="text-2xl font-bold mb-4 text-gray-800">🧩 プロジェクト</h2>
-      <p class="text-gray-700">ここにあなたの作品やアプリを紹介できます。</p>
-    </section>
-
-    <section id="about">
-      <h2 class="text-2xl font-bold mb-4 text-gray-800">💡 このサイトについて</h2>
-      <p class="text-gray-700">ヘッダーを50pxの角丸にして柔らかく、全体を上品に仕上げています。</p>
-    </section>
+    <h2 class="text-2xl font-bold mb-4">メインコンテンツ</h2>
+    <p>スマホでは ☰ を押すとメニューが出て、もう一度押すか外をクリックすると閉じます。</p>
   </main>
 
   <script>
-    // メニュー切り替え
-    const links = document.querySelectorAll('.nav-links a');
-    const sections = document.querySelectorAll('main section');
-    const navLinks = document.getElementById('navLinks');
-    const menuBtn = document.getElementById('menuBtn');
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
 
-    links.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = link.dataset.target;
-        sections.forEach(sec => sec.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
-        navLinks.classList.remove('open');
-      });
+    // 開閉トグル
+    menuBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
     });
 
-    // ハンバーガー開閉
-    menuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-
-    // 外クリックで閉じる
-    document.addEventListener('click', e => {
+    // 外をクリックしたら閉じる
+    document.addEventListener("click", e => {
       if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
-        navLinks.classList.remove('open');
+        navLinks.classList.remove("open");
       }
     });
   </script>
