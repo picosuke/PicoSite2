@@ -1,6 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>友達チャット</title>
+<script type="module">
+  // Firebase SDKを読み込む
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  // ✅ ここを自分のfirebaseConfigに置き換える
+  const firebaseConfig = {
+    apiKey: "XXXX",
+    authDomain: "XXXX.firebaseapp.com",
+    databaseURL: "https://XXXX-default-rtdb.firebaseio.com",
+    projectId: "XXXX",
+    storageBucket: "XXXX.appspot.com",
+    messagingSenderId: "XXXX",
+    appId: "XXXX"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const chatRef = ref(db, "chat");
+
+  const name = prompt("名前を入力してください：") || "名無し";
+
+  const chat = document.getElementById("chat");
+  const text = document.getElementById("text");
+  const send = document.getElementById("send");
+
+  send.onclick = () => {
+    const msg = text.value.trim();
+    if (!msg) return;
+    push(chatRef, { name, msg, time: Date.now() });
+    text.value = "";
+  };
+
+  onChildAdded(chatRef, (data) => {
+    const { name, msg } = data.val();
+    const div = document.createElement("div");
+    div.innerHTML = `<b>${name}:</b> ${msg}`;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  });
+</script>
+
+<style>
+body { font-family:sans-serif; display:flex; flex-direction:column; align-items:center; background:#f6f6f6; height:100vh; margin:0; }
+#chat { flex:1; width:90%; max-width:500px; background:white; border-radius:20px; margin-top:20px; padding:10px; overflow-y:auto; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+#input { display:flex; width:90%; max-width:500px; margin:10px; }
+#text { flex:1; border:1px solid #ccc; border-radius:15px; padding:10px; }
+#send { margin-left:10px; background:#007aff; color:white; border:none; border-radius:15px; padding:10px 20px; cursor:pointer; }
+</style>
+</head>
+<body>
 <h2>💬 友達チャット</h2>
 <div id="chat"></div>
 <div id="input">
   <input id="text" placeholder="メッセージを入力..." />
   <button id="send">送信</button>
 </div>
+</body>
+</html>
