@@ -3,31 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <title>友達チャット</title>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDGPCCNoeWuPAhGpKLdabyAU-5hTdHemw8",
-    authDomain: "my-chat-app-37b9e.firebaseapp.com",
-    databaseURL: "https://my-chat-app-37b9e-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "my-chat-app-37b9e",
-    storageBucket: "my-chat-app-37b9e.firebasestorage.app",
-    messagingSenderId: "111829020213",
-    appId: "1:111829020213:web:44f631c678dcb8525c8b7c",
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDGPCCNoeWuPAhGpKLdabyAU-5hTdHemw8",
+  authDomain: "my-chat-app-37b9e.firebaseapp.com",
+  databaseURL: "https://my-chat-app-37b9e-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "my-chat-app-37b9e",
+  storageBucket: "my-chat-app-37b9e.appspot.com",
+  messagingSenderId: "111829020213",
+  appId: "1:111829020213:web:44f631c678dcb8525c8b7c",
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const storage = getStorage(app);
 
-  // メッセージを送信
-  const messagesRef = ref(db, "messages");
-  push(messagesRef, { text: "Hello Firebase!", time: Date.now() });
+const messagesRef = ref(db, "messages");
+const chat = document.getElementById("chat");
+const textInput = document.getElementById("text");
+const sendBtn = document.getElementById("send");
+const imageInput = document.getElementById("image");
+const stampBtns = document.querySelectorAll(".stamp-btn");
 
-  // メッセージをリアルタイムで受信
-  onValue(messagesRef, (snapshot) => {
-    console.log(snapshot.val());
+// メッセージをリアルタイムで受信
+onValue(messagesRef, (snapshot) => {
+  chat.innerHTML = ""; // 既存メッセージをクリア
+  const data = snapshot.val();
+  if(data){
+    Object.values(data).forEach(msg => {
+      const div = document.createElement("div");
+      div.className = "message";
+      if(msg.image){
+        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> <br><img src="${msg.image}" style="max-width:200px; border-radius:10px;">`;
+      } else if(msg.stamp){
+        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> <br> <img src="${msg.stamp}" style="width:50px;">`;
+      } else {
+        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> ${msg.text}`;
+      }
+      chat.appendChild(div);
+    });
+    chat.scrollTop = chat.scrollHeight; // 常に下にスクロール
+  }
+});
+
+// メッセージ送信
+sendBtn.addEventListener("click", async () => {
+  const text = textInput.value.trim();
+  const file = imageInput.files[0];
+  if(text){
+    await push(messagesRef, { text, time: Date.now() });
+    textInput.value = "";
+  }
+  if(file){
+    const storageRef = sRef(storage, `images/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    await push(messagesRef, { image: url, time: Date.now() });
+    imageInput.value = "";
+  }
+});
+
+// スタンプ送信
+stampBtns.forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const url = btn.dataset.url;
+    await push(messagesRef, { stamp: url, time: Date.now() });
   });
+});
 </script>
 
 <style>
@@ -72,6 +118,14 @@ body {
   padding: 10px 20px;
   cursor: pointer;
 }
+.message {
+  margin-bottom: 10px;
+}
+.stamp-btn {
+  cursor: pointer;
+  margin: 5px;
+  width: 50px;
+}
 </style>
 </head>
 <body>
@@ -79,7 +133,13 @@ body {
 <div id="chat"></div>
 <div id="input">
   <input id="text" placeholder="メッセージを入力..." />
+  <input type="file" id="image" accept="image/*"/>
   <button id="send">送信</button>
+</div>
+<div id="stamps">
+  <h3>スタンプ</h3>
+  <img class="stamp-btn" src="https://example.com/stamp1.png" data-url="https://example.com/stamp1.png">
+  <img class="stamp-btn" src="https://example.com/stamp2.png" data-url="https://example.com/stamp2.png">
 </div>
 </body>
 </html>
