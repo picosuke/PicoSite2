@@ -6,7 +6,6 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGPCCNoeWuPAhGpKLdabyAU-5hTdHemw8",
@@ -20,58 +19,50 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const storage = getStorage(app);
 
 const messagesRef = ref(db, "messages");
 const chat = document.getElementById("chat");
 const textInput = document.getElementById("text");
 const sendBtn = document.getElementById("send");
-const imageInput = document.getElementById("image");
+const nameInput = document.getElementById("name");
 const stampBtns = document.querySelectorAll(".stamp-btn");
 
-// メッセージをリアルタイムで受信
+// リアルタイム受信
 onValue(messagesRef, (snapshot) => {
-  chat.innerHTML = ""; // 既存メッセージをクリア
+  chat.innerHTML = "";
   const data = snapshot.val();
   if(data){
     Object.values(data).forEach(msg => {
       const div = document.createElement("div");
       div.className = "message";
-      if(msg.image){
-        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> <br><img src="${msg.image}" style="max-width:200px; border-radius:10px;">`;
-      } else if(msg.stamp){
-        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> <br> <img src="${msg.stamp}" style="width:50px;">`;
+      if(msg.stamp){
+        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> <br>
+                         <img src="${msg.stamp}" style="width:50px;">`;
       } else {
-        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> ${msg.text}`;
+        div.textContent = `${msg.user || '名無し'}: ${msg.text}`;
       }
       chat.appendChild(div);
     });
-    chat.scrollTop = chat.scrollHeight; // 常に下にスクロール
+    chat.scrollTop = chat.scrollHeight;
   }
 });
 
-// メッセージ送信
+// テキスト送信
 sendBtn.addEventListener("click", async () => {
+  const user = nameInput.value.trim() || '名無し';
   const text = textInput.value.trim();
-  const file = imageInput.files[0];
   if(text){
-    await push(messagesRef, { text, time: Date.now() });
+    await push(messagesRef, { text, user, time: Date.now() });
     textInput.value = "";
-  }
-  if(file){
-    const storageRef = sRef(storage, `images/${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
-    await push(messagesRef, { image: url, time: Date.now() });
-    imageInput.value = "";
   }
 });
 
 // スタンプ送信
 stampBtns.forEach(btn => {
   btn.addEventListener("click", async () => {
+    const user = nameInput.value.trim() || '名無し';
     const url = btn.dataset.url;
-    await push(messagesRef, { stamp: url, time: Date.now() });
+    await push(messagesRef, { stamp: url, user, time: Date.now() });
   });
 });
 </script>
@@ -103,19 +94,25 @@ body {
   max-width: 500px;
   margin: 10px;
 }
+#name {
+  width: 100px;
+  margin-right: 5px;
+  border-radius: 10px;
+  padding: 5px;
+}
 #text {
   flex: 1;
   border: 1px solid #ccc;
-  border-radius: 15px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 5px;
 }
 #send {
-  margin-left: 10px;
+  margin-left: 5px;
   background: #007aff;
   color: white;
   border: none;
-  border-radius: 15px;
-  padding: 10px 20px;
+  border-radius: 10px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 .message {
@@ -132,14 +129,16 @@ body {
 <h2>💬 友達チャット</h2>
 <div id="chat"></div>
 <div id="input">
+  <input id="name" placeholder="名前"/>
   <input id="text" placeholder="メッセージを入力..." />
-  <input type="file" id="image" accept="image/*"/>
   <button id="send">送信</button>
 </div>
+
+<h3>スタンプ（いらすとや）</h3>
 <div id="stamps">
-  <h3>スタンプ</h3>
-  <img class="stamp-btn" src="https://example.com/stamp1.png" data-url="https://example.com/stamp1.png">
-  <img class="stamp-btn" src="https://example.com/stamp2.png" data-url="https://example.com/stamp2.png">
+  <img class="stamp-btn" src="https://www.irasutoya.com/wp-content/uploads/2022/03/face_smile.png" data-url="https://www.irasutoya.com/wp-content/uploads/2022/03/face_smile.png">
+  <img class="stamp-btn" src="https://www.irasutoya.com/wp-content/uploads/2021/12/heart.png" data-url="https://www.irasutoya.com/wp-content/uploads/2021/12/heart.png">
+  <img class="stamp-btn" src="https://www.irasutoya.com/wp-content/uploads/2020/05/thumb_up.png" data-url="https://www.irasutoya.com/wp-content/uploads/2020/05/thumb_up.png">
 </div>
 </body>
 </html>
