@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <title>友達チャット</title>
 <script type="module">
-  // Firebase SDK を読み込み
+  // ===== Firebase SDKを読み込み =====
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+  // ※ analytics は不要なので削除（あとで復活も可）
 
-  // Firebase設定（databaseURLを追加）
+  // ===== Firebase設定 =====
   const firebaseConfig = {
     apiKey: "AIzaSyDGPCCNoeWuPAhGpKLdabyAU-5hTdHemw8",
     authDomain: "my-chat-app-37b9e.firebaseapp.com",
@@ -16,22 +17,21 @@
     storageBucket: "my-chat-app-37b9e.firebasestorage.app",
     messagingSenderId: "111829020213",
     appId: "1:111829020213:web:44f631c678dcb8525c8b7c",
-    measurementId: "G-KEWGNGJS9V",
-    databaseURL: "https://my-chat-app-37b9e-default-rtdb.asia-southeast1.firebasedatabase.app/" // ←ここ重要！
+    databaseURL: "https://my-chat-app-37b9e-default-rtdb.asia-southeast1.firebasedatabase.app/"
   };
 
-  // 初期化
+  // ===== 初期化 =====
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const chatRef = ref(db, "chat");
 
+  // ===== DOM参照 =====
   const name = prompt("名前を入力してください：") || "名無し";
-
   const chat = document.getElementById("chat");
   const text = document.getElementById("text");
   const send = document.getElementById("send");
 
-  // 送信
+  // ===== 送信ボタン =====
   send.onclick = () => {
     const msg = text.value.trim();
     if (!msg) return;
@@ -39,7 +39,7 @@
     text.value = "";
   };
 
-  // 新しいメッセージを表示
+  // ===== 新しいメッセージを受信 =====
   onChildAdded(chatRef, (data) => {
     const { name, msg } = data.val();
     const div = document.createElement("div");
@@ -68,7 +68,7 @@ body {
   margin-top: 20px;
   padding: 10px;
   overflow-y: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 #input {
   display: flex;
