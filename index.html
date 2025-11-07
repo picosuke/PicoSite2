@@ -4,28 +4,24 @@
 <meta charset="UTF-8">
 <title>友達チャット</title>
 <script type="module">
-  // Firebase SDKを読み込む
-  // Import the functions you need from the SDKs you need
+  // Firebase SDK のインポート
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  // Firebase設定
   const firebaseConfig = {
     apiKey: "AIzaSyDGPCCNoeWuPAhGpKLdabyAU-5hTdHemw8",
     authDomain: "my-chat-app-37b9e.firebaseapp.com",
     projectId: "my-chat-app-37b9e",
+    databaseURL: "https://my-chat-app-37b9e-default-rtdb.firebaseio.com/",
     storageBucket: "my-chat-app-37b9e.firebasestorage.app",
     messagingSenderId: "111829020213",
-    appId: "1:111829020213:web:44f631c678dcb8525c8b7c",
-    measurementId: "G-KEWGNGJS9V"
+    appId: "1:111829020213:web:44f631c678dcb8525c8b7c"
   };
 
-  // Initialize Firebase
+  // Firebase 初期化
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  const db = getDatabase(app);
   const chatRef = ref(db, "chat");
 
   const name = prompt("名前を入力してください：") || "名無し";
@@ -34,6 +30,7 @@
   const text = document.getElementById("text");
   const send = document.getElementById("send");
 
+  // 送信処理
   send.onclick = () => {
     const msg = text.value.trim();
     if (!msg) return;
@@ -41,6 +38,7 @@
     text.value = "";
   };
 
+  // メッセージ受信
   onChildAdded(chatRef, (data) => {
     const { name, msg } = data.val();
     const div = document.createElement("div");
@@ -51,11 +49,47 @@
 </script>
 
 <style>
-body { font-family:sans-serif; display:flex; flex-direction:column; align-items:center; background:#f6f6f6; height:100vh; margin:0; }
-#chat { flex:1; width:90%; max-width:500px; background:white; border-radius:20px; margin-top:20px; padding:10px; overflow-y:auto; box-shadow:0 0 10px rgba(0,0,0,0.1); }
-#input { display:flex; width:90%; max-width:500px; margin:10px; }
-#text { flex:1; border:1px solid #ccc; border-radius:15px; padding:10px; }
-#send { margin-left:10px; background:#007aff; color:white; border:none; border-radius:15px; padding:10px 20px; cursor:pointer; }
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f6f6f6;
+  height: 100vh;
+  margin: 0;
+}
+#chat {
+  flex: 1;
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  border-radius: 20px;
+  margin-top: 20px;
+  padding: 10px;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+#input {
+  display: flex;
+  width: 90%;
+  max-width: 500px;
+  margin: 10px;
+}
+#text {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  padding: 10px;
+}
+#send {
+  margin-left: 10px;
+  background: #007aff;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
