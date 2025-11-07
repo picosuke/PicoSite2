@@ -3,49 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <title>友達チャット</title>
-<script type="module">
-  // ===== Firebase SDKを読み込み =====
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
-  // ※ analytics は不要なので削除（あとで復活も可）
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-  // ===== Firebase設定 =====
   const firebaseConfig = {
     apiKey: "AIzaSyDGPCCNoeWuPAhGpKLdabyAU-5hTdHemw8",
     authDomain: "my-chat-app-37b9e.firebaseapp.com",
+    databaseURL: "https://my-chat-app-37b9e-default-rtdb.firebaseio.com",
     projectId: "my-chat-app-37b9e",
     storageBucket: "my-chat-app-37b9e.firebasestorage.app",
     messagingSenderId: "111829020213",
     appId: "1:111829020213:web:44f631c678dcb8525c8b7c",
-    databaseURL: "https://my-chat-app-37b9e-default-rtdb.asia-southeast1.firebasedatabase.app/"
   };
 
-  // ===== 初期化 =====
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const chatRef = ref(db, "chat");
 
-  // ===== DOM参照 =====
-  const name = prompt("名前を入力してください：") || "名無し";
-  const chat = document.getElementById("chat");
-  const text = document.getElementById("text");
-  const send = document.getElementById("send");
+  // メッセージを送信
+  const messagesRef = ref(db, "messages");
+  push(messagesRef, { text: "Hello Firebase!", time: Date.now() });
 
-  // ===== 送信ボタン =====
-  send.onclick = () => {
-    const msg = text.value.trim();
-    if (!msg) return;
-    push(chatRef, { name, msg, time: Date.now() });
-    text.value = "";
-  };
-
-  // ===== 新しいメッセージを受信 =====
-  onChildAdded(chatRef, (data) => {
-    const { name, msg } = data.val();
-    const div = document.createElement("div");
-    div.innerHTML = `<b>${name}:</b> ${msg}`;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
+  // メッセージをリアルタイムで受信
+  onValue(messagesRef, (snapshot) => {
+    console.log(snapshot.val());
   });
 </script>
 
