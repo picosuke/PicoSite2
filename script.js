@@ -1,3 +1,12 @@
+const toggle = document.querySelector(".menu-toggle");
+const menu = document.querySelector("#hd ul");
+
+toggle.addEventListener("click", () => {
+  menu.classList.toggle("show");
+  toggle.classList.toggle("active");
+});
+
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
