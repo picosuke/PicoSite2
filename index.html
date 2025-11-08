@@ -14,25 +14,41 @@
     <span></span>
   </div>
   <ul>
-    <li>ホーム</li>
-    <li>チャット</li>
-    <li>翻訳</li>
-    <li>----</li>
+    <li data-target="main1">ホーム</li>
+    <li data-target="main2">チャット</li>
+    <li data-target="main3">翻訳</li>
+    <li data-target="main4">PicoTube</li>
   </ul>
 </header>
-<h2>💬 友達チャット</h2>
-<div id="chat"></div>
-<div id="input">
-  <input id="name" placeholder="名前"/>
-  <input id="text" placeholder="メッセージを入力..." />
-  <button id="send">送信</button>
-</div>
 
-<h3>スタンプ（いらすとや）</h3>
-<div id="stamps">
-  <img class="stamp-btn" src="https://x.gd/VJFXa" data-url="https://x.gd/VJFXa">
-  <img class="stamp-btn" src="https://x.gd/Pq0J5" data-url="https://x.gd/Pq0J5">
-  <img class="stamp-btn" src="https://x.gd/ojvnt" data-url="https://x.gd/ojvnt">
-</div>
+<!-- 各メインコンテンツ -->
+<main id="main1" class="content active">
+  ホーム
+</main>
+
+<main id="main2" class="content">
+  <h2>💬 友達チャット</h2>
+  <div id="chat"></div>
+  <div id="input">
+    <input id="name" placeholder="名前"/>
+    <input id="text" placeholder="メッセージを入力..." />
+    <button id="send">送信</button>
+  </div>
+
+  <h3>スタンプ（いらすとや）</h3>
+  <div id="stamps">
+    <img class="stamp-btn" src="https://x.gd/VJFXa" data-url="https://x.gd/VJFXa">
+    <img class="stamp-btn" src="https://x.gd/Pq0J5" data-url="https://x.gd/Pq0J5">
+    <img class="stamp-btn" src="https://x.gd/ojvnt" data-url="https://x.gd/ojvnt">
+  </div>
+</main>
+  
+<main id="main3" class="content">
+  翻訳
+</main>
+  
+<main id="main4" class="content">
+  PicoTube
+</main>
 </body>
 </html>
