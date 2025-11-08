@@ -4,64 +4,7 @@
 <meta charset="UTF-8">
 <title>友達チャット</title>
 <script src="./script.js"></script>
-
-<style>
-body {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #f6f6f6;
-  height: 100vh;
-  margin: 0;
-}
-#chat {
-  flex: 1;
-  width: 90%;
-  max-width: 500px;
-  background: white;
-  border-radius: 20px;
-  margin-top: 20px;
-  padding: 10px;
-  overflow-y: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-#input {
-  display: flex;
-  width: 90%;
-  max-width: 500px;
-  margin: 10px;
-}
-#name {
-  width: 100px;
-  margin-right: 5px;
-  border-radius: 10px;
-  padding: 5px;
-}
-#text {
-  flex: 1;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 5px;
-}
-#send {
-  margin-left: 5px;
-  background: #007aff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-.message {
-  margin-bottom: 10px;
-}
-.stamp-btn {
-  cursor: pointer;
-  margin: 5px;
-  width: 50px;
-}
-</style>
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <h2>💬 友達チャット</h2>
@@ -74,8 +17,8 @@ body {
 
 <h3>スタンプ（いらすとや）</h3>
 <div id="stamps">
-  <img class="stamp-btn" src="https://www.irasutoya.com/wp-content/uploads/2022/03/face_smile.png" data-url="https://www.irasutoya.com/wp-content/uploads/2022/03/face_smile.png">
-  <img class="stamp-btn" src="https://www.irasutoya.com/wp-content/uploads/2021/12/heart.png" data-url="https://www.irasutoya.com/wp-content/uploads/2021/12/heart.png">
+  <img class="stamp-btn" src="https://www.any.co.jp/wordpress_sub/wp-content/uploads/2021/01/pose_pien_uruuru_woman.png" data-url="https://www.irasutoya.com/wp-content/uploads/2022/03/face_smile.png">
+  <img class="stamp-btn" src="https://msp.c.yimg.jp/images/v2/FUTi93tXq405grZVGgDqG3tY6-US_ZDcPukB1Jp1HNyfW2fCH5F-SJLCnImkORMU1QL9a4vC5Gj-YijBnfYbSni52J4cCMJE2mMQR7HtrRias1qfz40VgtArO8FzWjR_WjUafRptvo38HuFKyrRo1p0ecaJCY85yt3kABaVBBi2a5X6rbYSxGOMCi9cFtswJmFtPkZe777zT0s0nO0DrWMA1HZPlVO8vBx6Z3MevpaBEAlVgAcv1PjseP2MnIP3iDZb21MQSZnewVFkR2PSg4tAnmJEM9HEru8dIjqzhrMAMGaiSRq8xy9QBBlvDkvIgnXuBezEPoclGbaxGE_M8EPlRpZshK6WZG8SdjH2asxmu5ShDenpZ4RspFBx_4D8UD6nDxyHAvjvEslzVo4l2B4Nk1FqJ9eE0Kz8G6BZUDmg=/yaruki_moeru_man.png" data-url="https://www.irasutoya.com/wp-content/uploads/2021/12/heart.png">
   <img class="stamp-btn" src="https://www.irasutoya.com/wp-content/uploads/2020/05/thumb_up.png" data-url="https://www.irasutoya.com/wp-content/uploads/2020/05/thumb_up.png">
 </div>
 </body>
