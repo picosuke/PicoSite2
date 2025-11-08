@@ -134,6 +134,12 @@ body {
 
 main.content {
   display: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* 横方向の中央寄せ */
+  justify-content: center; /* 縦方向の中央寄せ */
+  min-height: calc(100vh - 100px); /* ヘッダー分を引いた高さ */
+  padding: 20px;
   text-align: center;
 }
 
@@ -142,46 +148,56 @@ main.content.active {
 }
 
 #chat {
-  flex: 1;
   width: 90%;
   max-width: 500px;
   background: white;
   border-radius: 20px;
-  margin-top: 20px;
+  margin: 20px 0;
   padding: 10px;
   overflow-y: auto;
   height: 500px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
 #input {
   display: flex;
+  justify-content: center; /* 中央寄せ */
+  align-items: center;
   width: 90%;
   max-width: 500px;
-  margin: 10px;
+  gap: 5px; /* 間隔を統一 */
 }
+
 #name {
   width: 100px;
-  margin-right: 5px;
   border-radius: 10px;
   padding: 5px;
 }
+
 #text {
   flex: 1;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 5px;
 }
+
 #send {
-  margin-left: 5px;
   background: #007aff;
   color: white;
   border: none;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 6px 12px;
   cursor: pointer;
+  transition: 0.2s;
 }
+
+#send:hover {
+  background: #005fcc;
+}
+
 .message {
   margin-bottom: 10px;
+  text-align: left;
 }
 .stamp-btn {
   cursor: pointer;
