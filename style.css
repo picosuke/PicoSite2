@@ -1,3 +1,136 @@
+/**
+ * uaplus.css version 0.0.1
+ */
+*,*::after,*::before{box-sizing:border-box}:focus-visible{outline-offset:3px}:where(html){-webkit-text-size-adjust:none;text-size-adjust:none}:where(html){line-height:1.5}:where(html){scrollbar-gutter:stable}:where(h1){font-size:2em;margin-block:.67em}:where(abbr[title]){cursor:help;text-decoration-line:underline;text-decoration-style:dotted}@media (forced-colors:active){mark{color:HighlightText;background-color:Highlight}}:where(del,ins,s)::before,:where(del,ins,s)::after{clip-path:inset(100%);clip:rect(1px,1px,1px,1px);height:1px;width:1px;overflow:hidden;position:absolute;white-space:nowrap;content:"test"}:where(s)::before{content:"stricken text start "}:where(s)::after{content:" stricken text end"}:where(del)::before{content:"deletion start "}:where(del)::after{content:" deletion end"}:where(ins)::before{content:"insertion start "}:where(ins)::after{content:" insertion end"}:where(audio,iframe,img,svg,video){max-block-size:100%;max-inline-size:100%}:where(fieldset){min-inline-size:0}:where(label):has(+:where(textarea,input,select)){display:block}:where(textarea:not([rows])){min-block-size:6em}:where(button,input,select,textarea){font-family:inherit;font-size:inherit}:where([type="search"]){-webkit-appearance:textfield}@supports (-webkit-touch-callout:none){:where([type="search"]){border:1px solid -apple-system-secondary-label;background-color:canvas}}:where([type="tel"],[type="url"],[type="email"],[type="number"]):not(:placeholder-shown){direction:ltr}:where(table){border-collapse:collapse;border:1px solid}:where(th,td){border:1px solid;padding:.25em .5em}:where(dialog)::backdrop{background:oklch(0% 0 0 / .3)}:where(dialog),:where(dialog)::backdrop{opacity:0;transition:opacity 300ms ease-out,display 300ms allow-discrete,overlay 300ms allow-discrete}:where(dialog[open]),:where(dialog[open])::backdrop{opacity:1}@starting-style{:where(dialog[open]),:where(dialog[open])::backdrop{opacity:0}}[hidden]:not([hidden="until-found"]){display:none!important}
+
+:root {
+  --hd-top: 10px;     /* 上からの距離 */
+  --hd-side: 10px;    /* 左右の余白 */
+}
+
+#hd {
+  background-color: #fff;
+  border: 2px solid #d8d8d8;
+  border-radius: 50px;
+  box-shadow: 0 0 8px 2px #bbb;
+  width: calc(100% - var(--hd-side) * 2);
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 5px 0;
+  position: fixed;
+  top: var(--hd-top);
+  left: var(--hd-side);
+  right: var(--hd-side);
+  z-index: 999;
+}
+
+
+/* ヘッダー下のコンテンツを隠れないように調整 */
+body {
+  padding-top: 80px; /* ヘッダー高さ＋余白分 */
+}
+
+/* リスト共通 */
+#hd > ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  align-items: center;
+}
+
+/* メニュー項目 */
+#hd > ul > li {
+  margin: 0 20px;
+  transition: all 0.2s;
+  background-color: transparent;
+  border-radius: 50px;
+  width: 180px;
+  height: calc(100% - 10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hd > ul > li:hover {
+  background-color: #00000009;
+}
+
+/* ハンバーガーメニュー */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  cursor: pointer;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 4px;
+  background: #000;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+@media (max-width: 900px) {
+  .menu-toggle {
+    display: flex;
+    position: absolute;
+    left: 50%;            /* 画面中央 */
+    top: 50%;
+    transform: translate(-50%, -50%); /* 中央に揃える */
+  }
+
+  #hd ul {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+    top: 80px;
+    left: 10px;
+    width: 150px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+  }
+
+  #hd ul li {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+  }
+
+  #hd ul.show {
+    display: flex;
+  }
+
+  .menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 7.5px);
+  }
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -7.5px);
+  }
+}
+
 
 body {
   font-family: sans-serif;
