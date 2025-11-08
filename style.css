@@ -134,11 +134,11 @@ body {
 
 main.content {
   display: none;
+  text-align: center;
 }
 
 main.content.active {
   display: block;
-  text-align: center;
 }
 
 #chat {
