@@ -5,7 +5,18 @@ toggle.addEventListener("click", () => {
   menu.classList.toggle("show");
   toggle.classList.toggle("active");
 });
+const menuItems = document.querySelectorAll("#hd ul li");
+const contents = document.querySelectorAll(".content");
 
+menuItems.forEach(item => {
+  item.addEventListener("click", () => {
+    // すべての main を非表示
+    contents.forEach(c => c.classList.remove("active"));
+     // 対象IDを取得して表示
+    const targetId = item.dataset.target;
+    document.getElementById(targetId).classList.add("active");
+  });
+});
 
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
