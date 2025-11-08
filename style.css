@@ -27,10 +27,15 @@
   z-index: 999;
 }
 
-
-/* ヘッダー下のコンテンツを隠れないように調整 */
 body {
-  padding-top: 80px; /* ヘッダー高さ＋余白分 */
+  padding-top: 80px; /* ヘッダー高さ＋余白分 */{
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  height: 100%;
+  margin: 0;
 }
 
 /* リスト共通 */
@@ -131,16 +136,14 @@ body {
   }
 }
 
-
-body {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #f6f6f6;
-  height: 100vh;
-  margin: 0;
+main.content {
+  display: none;
 }
+
+main.content.active {
+  display: block;
+}
+
 #chat {
   flex: 1;
   width: 90%;
