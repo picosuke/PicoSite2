@@ -152,7 +152,7 @@ main.content.active {
   margin-top: 20px;
   padding: 10px;
   overflow-y: auto;
-  height: 200pxx;
+  height: 800pxx;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 #input {
