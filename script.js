@@ -80,3 +80,8 @@ stampBtns.forEach(btn => {
     await push(messagesRef, { stamp: url, user, time: Date.now() });
   });
 });
+
+// ホーム画面ボタンのスムーズスクロール
+document.getElementById("getStartedBtn")?.addEventListener("click", () => {
+  document.querySelector("#chat")?.scrollIntoView({ behavior: "smooth" });
+});
