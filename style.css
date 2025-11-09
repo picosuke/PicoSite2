@@ -14,7 +14,7 @@
   border-radius: 50px;
   box-shadow: 0 0 8px 2px #bbb;
   width: calc(100% - var(--hd-side) * 2);
-  height: 60px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
