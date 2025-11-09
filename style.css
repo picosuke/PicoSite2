@@ -139,7 +139,7 @@ main.content {
 }
 
 main.content.active {
-  display: flex;
+  display: block;
 }
 
 #chat {
