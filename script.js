@@ -152,7 +152,7 @@ sendBtn2.addEventListener("click", sendMessage);
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const mainMenu = document.getElementById("menu"); // ← 変更
+const mainMenu = document.getElementById("menu");
 const gameover = document.getElementById("gameover");
 const startBtn = document.getElementById("startBtn");
 const retryBtn = document.getElementById("retryBtn");
@@ -164,7 +164,7 @@ const seHit = document.getElementById("seHit");
 
 let question = "";
 let answer = 0;
-let input = "";
+let playerInput = ""; // ← 変更
 let cpuTime = 0;
 let playerAnswered = false;
 let gameRunning = false;
@@ -196,7 +196,7 @@ function draw() {
   ctx.fillText(`問題: ${question}`, 150, 150);
 
   ctx.fillStyle = "#0f0";
-  ctx.fillText(`あなたの答え: ${input}`, 150, 200);
+  ctx.fillText(`あなたの答え: ${playerInput}`, 150, 200); // ← 修正
 
   ctx.fillStyle = "#f44";
   ctx.fillText(`敵が狙っている...`, 150, 250);
@@ -215,7 +215,7 @@ function startGame() {
 
 function nextQuestion() {
   playerAnswered = false;
-  input = "";
+  playerInput = ""; // ← 修正
   randomQuestion();
   draw();
   cpuTime = Math.random() * difficulty + 500;
@@ -233,7 +233,7 @@ function playerSubmit() {
   playerAnswered = true;
   seHit.play();
 
-  if (Number(input) === answer) {
+  if (Number(playerInput) === answer) { // ← 修正
     win();
   } else {
     lose();
@@ -263,9 +263,9 @@ function drawEffect(text, color) {
 window.addEventListener("keydown", (e) => {
   if (!gameRunning) return;
   if (e.key >= "0" && e.key <= "9") {
-    input += e.key;
+    playerInput += e.key;
   } else if (e.key === "Backspace") {
-    input = input.slice(0, -1);
+    playerInput = playerInput.slice(0, -1);
   } else if (e.key === "Enter") {
     playerSubmit();
   }
@@ -281,4 +281,3 @@ retryBtn.onclick = () => {
   gameover.style.display = "none";
 };
 mainMenu.style.display = "block";
-
