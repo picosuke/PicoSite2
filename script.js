@@ -86,3 +86,64 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
   document.querySelector("#chat")?.scrollIntoView({ behavior: "smooth" });
 });
 
+
+const chatBox = document.getElementById("chat-box");
+const input = document.getElementById("chat-input");
+const sendBtn = document.getElementById("chat-send");
+// 🔑 あなたのOpenAI APIキーをここに
+const OPENAI_API_KEY = "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";
+// HTMLをエスケープして「タグを実行させない」
+function escapeHTML(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+async function sendMessage() {
+  const userMessage = input.value.trim();
+  if (!userMessage) return;
+  addMessage("user", userMessage);
+  input.value = "";
+  addMessage("assistant", "ChatGPTが考え中... 🤔");
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "あなたは親切なAIアシスタントです。HTMLなどのコードはエスケープして安全に表示してください。" },
+          { role: "user", content: userMessage }
+        ]
+      })
+    });
+    const data = await res.json();
+    const reply = data.choices[0].message.content.trim();
+    chatBox.lastChild.remove();
+    addMessage("assistant", reply);
+  } catch (err) {
+    chatBox.lastChild.remove();
+    addMessage("assistant", "⚠️ エラーが発生しました: " + err.message);
+  }
+}
+// ✅ HTMLをエスケープして安全に表示
+function addMessage(role, text) {
+  const div = document.createElement("div");
+  div.className = "message " + role;
+  div.innerHTML = (role === "user" ? "👤 <b>あなた</b>:<br>" : "🤖 <b>ChatGPT</b>:<br>") + escapeHTML(text).replace(/\n/g, "<br>");
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+// Enterで送信 / Shift+Enterで改行
+input.addEventListener("keypress", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+sendBtn.addEventListener("click", sendMessage);
