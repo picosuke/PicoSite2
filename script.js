@@ -251,7 +251,7 @@ function lose() {
   seLose.play();
   gameRunning = false;
   gameover.style.display = "block";
-  resultText.textContent = `負けました！連勝数: ${score}`;
+  resultText.textContent = `負けてしまった 連勝数: ${score}`;
 }
 
 function drawEffect(text, color) {
