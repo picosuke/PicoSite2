@@ -148,9 +148,11 @@ input.addEventListener("keypress", e => {
 });
 sendBtn2.addEventListener("click", sendMessage);
 
+//ここから変わるお
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const menu = document.getElementById("menu");
+const mainMenu = document.getElementById("menu"); // ← 変更
 const gameover = document.getElementById("gameover");
 const startBtn = document.getElementById("startBtn");
 const retryBtn = document.getElementById("retryBtn");
@@ -178,7 +180,7 @@ function randomQuestion() {
     op = "×";
     answer = a * b;
   } else {
-    // 割り算（割れるものだけ）
+    // 割り算（割り切れるもののみ）
     b = Math.floor(Math.random() * 9) + 1;
     answer = Math.floor(Math.random() * 9) + 1;
     a = b * answer;
@@ -205,7 +207,7 @@ function draw() {
 
 function startGame() {
   score = 0;
-  menu.style.display = "none";
+  mainMenu.style.display = "none";
   gameover.style.display = "none";
   gameRunning = true;
   nextQuestion();
@@ -222,7 +224,6 @@ function nextQuestion() {
 
 function cpuAnswer() {
   if (!playerAnswered && gameRunning) {
-    // CPUが先に答えた
     lose();
   }
 }
@@ -276,7 +277,8 @@ startBtn.onclick = () => {
   startGame();
 };
 retryBtn.onclick = () => {
-  menu.style.display = "block";
+  mainMenu.style.display = "block";
   gameover.style.display = "none";
 };
-menu.style.display = "block";
+mainMenu.style.display = "block";
+
