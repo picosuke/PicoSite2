@@ -89,7 +89,7 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 
 const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
-const sendBtn = document.getElementById("chat-send");
+const sendBtn2 = document.getElementById("chat-send");
 // 🔑 あなたのOpenAI APIキーをここに
 const OPENAI_API_KEY = "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";
 // HTMLをエスケープして「タグを実行させない」
@@ -146,4 +146,4 @@ input.addEventListener("keypress", e => {
     sendMessage();
   }
 });
-sendBtn.addEventListener("click", sendMessage);
+sendBtn2.addEventListener("click", sendMessage);
