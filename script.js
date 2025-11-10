@@ -85,3 +85,4 @@ stampBtns.forEach(btn => {
 document.getElementById("getStartedBtn")?.addEventListener("click", () => {
   document.querySelector("#chat")?.scrollIntoView({ behavior: "smooth" });
 });
+
