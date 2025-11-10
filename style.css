@@ -99,48 +99,37 @@ body {
 }
 
 @media (max-width: 900px) {
-  .menu-toggle {
-    display: flex;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
   #hd ul {
     display: none;
     flex-direction: column;
     position: fixed;
     top: 80px;
     left: 10px;
-    width: 160px;
-    background: rgba(255,255,255,0.95);
+    width: calc(100% - 20px); /* ← 横幅を全体に */
+    background: rgba(255,255,255,0.97);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 10px;
+    padding: 12px 0;
     box-shadow: var(--shadow);
     backdrop-filter: blur(8px);
     z-index: 1000;
+    overflow: hidden;              /* ← 追加 */
   }
 
   #hd ul li {
     width: 100%;
-    padding: 10px;
+    padding: 14px 0;
     text-align: center;
+    font-size: 1.1rem;
   }
 
   #hd ul.show {
     display: flex;
-  }
-
-  .menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 7px);
-  }
-  .menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-  }
-  .menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -7px);
+    max-height: 80vh;              /* ← 高さ制限＋スクロール防止 */
+    overflow-y: auto;              /* ← 長い場合だけスクロール */
   }
 }
+
 
 /* メインコンテンツ */
 main.content {
