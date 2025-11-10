@@ -147,3 +147,136 @@ input.addEventListener("keypress", e => {
   }
 });
 sendBtn2.addEventListener("click", sendMessage);
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const menu = document.getElementById("menu");
+const gameover = document.getElementById("gameover");
+const startBtn = document.getElementById("startBtn");
+const retryBtn = document.getElementById("retryBtn");
+const resultText = document.getElementById("resultText");
+
+const seWin = document.getElementById("seWin");
+const seLose = document.getElementById("seLose");
+const seHit = document.getElementById("seHit");
+
+let question = "";
+let answer = 0;
+let input = "";
+let cpuTime = 0;
+let playerAnswered = false;
+let gameRunning = false;
+let score = 0;
+let difficulty = 1200;
+
+function randomQuestion() {
+  let a, b, op;
+  if (Math.random() < 0.5) {
+    // 掛け算
+    a = Math.floor(Math.random() * 9) + 1;
+    b = Math.floor(Math.random() * 9) + 1;
+    op = "×";
+    answer = a * b;
+  } else {
+    // 割り算（割れるものだけ）
+    b = Math.floor(Math.random() * 9) + 1;
+    answer = Math.floor(Math.random() * 9) + 1;
+    a = b * answer;
+    op = "÷";
+  }
+  question = `${a} ${op} ${b} = ?`;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#fff";
+  ctx.font = "30px Arial";
+  ctx.fillText(`問題: ${question}`, 150, 150);
+
+  ctx.fillStyle = "#0f0";
+  ctx.fillText(`あなたの答え: ${input}`, 150, 200);
+
+  ctx.fillStyle = "#f44";
+  ctx.fillText(`敵が狙っている...`, 150, 250);
+
+  ctx.fillStyle = "#FFD700";
+  ctx.fillText(`連勝数: ${score}`, 450, 50);
+}
+
+function startGame() {
+  score = 0;
+  menu.style.display = "none";
+  gameover.style.display = "none";
+  gameRunning = true;
+  nextQuestion();
+}
+
+function nextQuestion() {
+  playerAnswered = false;
+  input = "";
+  randomQuestion();
+  draw();
+  cpuTime = Math.random() * difficulty + 500;
+  setTimeout(cpuAnswer, cpuTime);
+}
+
+function cpuAnswer() {
+  if (!playerAnswered && gameRunning) {
+    // CPUが先に答えた
+    lose();
+  }
+}
+
+function playerSubmit() {
+  if (!gameRunning) return;
+  playerAnswered = true;
+  seHit.play();
+
+  if (Number(input) === answer) {
+    win();
+  } else {
+    lose();
+  }
+}
+
+function win() {
+  score++;
+  seWin.play();
+  drawEffect("勝ち！", "#0f0");
+  setTimeout(nextQuestion, 1000);
+}
+
+function lose() {
+  seLose.play();
+  gameRunning = false;
+  gameover.style.display = "block";
+  resultText.textContent = `負けました！連勝数: ${score}`;
+}
+
+function drawEffect(text, color) {
+  ctx.fillStyle = color;
+  ctx.font = "60px Arial Black";
+  ctx.fillText(text, 250, 300);
+}
+
+window.addEventListener("keydown", (e) => {
+  if (!gameRunning) return;
+  if (e.key >= "0" && e.key <= "9") {
+    input += e.key;
+  } else if (e.key === "Backspace") {
+    input = input.slice(0, -1);
+  } else if (e.key === "Enter") {
+    playerSubmit();
+  }
+  draw();
+});
+
+startBtn.onclick = () => {
+  difficulty = Number(document.getElementById("difficulty").value);
+  startGame();
+};
+retryBtn.onclick = () => {
+  menu.style.display = "block";
+  gameover.style.display = "none";
+};
+menu.style.display = "block";
