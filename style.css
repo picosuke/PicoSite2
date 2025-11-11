@@ -373,27 +373,111 @@ main.content.active {
   background: #005fa3;
 }
 
-    #menu, #gameover {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.8);
-      padding: 30px;
-      border-radius: 20px;
-      display: none;
-    }
-    button {
-      background: #00ffcc;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 20px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    canvas {
-      display: block;
-      margin: 0 auto;
-      background: #222;
-      border: 3px solid #fff;
-    ｓｓ
+/* ここから学習 */
+
+#app {
+  background: white;
+  width: 440px;
+  max-height: 85vh; /* 画面内に収まる最大高さ */
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  padding: 24px;
+  text-align: center;
+  margin: 0 auto;
+  overflow-y: auto; /* 中身が多くてもスクロール可能 */
+}
+
+
+/* 以下は既存のスタイルをそのまま残す */
+#pd_1 {
+  font-size: 22px;
+  color: #0078d7;
+  margin-bottom: 20px;
+}
+
+.option {
+  background: #fff;
+  border: 2px solid #0078d7;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.option:hover {
+  background: #e6f3ff;
+}
+
+.option.correct {
+  background: #b7f5c7;
+  border-color: #22bb33;
+}
+
+.option.wrong {
+  background: #ffd1d1;
+  border-color: #ee4444;
+}
+
+.progress {
+  width: 100%;
+  height: 12px;
+  border-radius: 8px;
+  background: #ddd;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #0078d7;
+  transition: width 0.3s ease;
+}
+
+#score {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+#result {
+  display: none;
+}
+
+#result h2 {
+  color: #0078d7;
+}
+
+.restart {
+  background: #0078d7;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.restart:hover {
+  background: #005ea1;
+}
+
+#score-list {
+  background: #f9fbff;
+  border: 1px solid #ccd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+}
+
+#quiz,
+#result,
+#score-list {
+  display: none;
+}
