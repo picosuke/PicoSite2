@@ -339,32 +339,40 @@ loadSets();
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
-    authDomain: "roguin-7ee69.firebaseapp.com",
-    projectId: "roguin-7ee69",
-    storageBucket: "roguin-7ee69.firebasestorage.app",
-    messagingSenderId: "255974650605",
-    appId: "1:255974650605:web:c46301b9a0da7f958a52e4",
-    measurementId: "G-PXRMCCHVLC"
-  };
+    // Firebase 初期化
+    const firebaseConfig = {
+      apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
+      authDomain: "roguin-7ee69.firebaseapp.com",
+      projectId: "roguin-7ee69",
+      storageBucket: "roguin-7ee69.firebasestorage.app",
+      messagingSenderId: "255974650605",
+      appId: "1:255974650605:web:c46301b9a0da7f958a52e4",
+      measurementId: "G-PXRMCCHVLC"
+    };
+    firebase.initializeApp(firebaseConfig);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
+    const auth = firebase.auth();
 
-  // ログインボタン
-  document.getElementById("loginBtn").onclick = () => {
-    signInWithPopup(auth, provider)
-      .then(result => {
-        const user = result.user;
-        document.getElementById("status").textContent = `ログイン中: ${user.displayName}`;
-      })
-      .catch(error => console.error(error));
-  };
+    // Google ログイン
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    document.getElementById('googleLogin').onclick = () => {
+      auth.signInWithPopup(googleProvider)
+        .then(result => {
+          alert('ログイン成功: ' + result.user.email);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
 
-  // ログアウトボタン
-  document.getElementById("logoutBtn").onclick = () => {
-    signOut(auth);
-    document.getElementById("status").textContent = "ログアウトしました";
-  };
+    // Microsoft ログイン
+    const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
+    document.getElementById('microsoftLogin').onclick = () => {
+      auth.signInWithPopup(microsoftProvider)
+        .then(result => {
+          alert('ログイン成功: ' + result.user.email);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
