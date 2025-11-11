@@ -91,7 +91,7 @@ const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
 const sendBtn2 = document.getElementById("chat-send");
 // 🔑 あなたのOpenAI APIキーをここに
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 // HTMLをエスケープして「タグを実行させない」
 function escapeHTML(str) {
   return str
@@ -148,136 +148,188 @@ input.addEventListener("keypress", e => {
 });
 sendBtn2.addEventListener("click", sendMessage);
 
-//ここから変わるお
+//学習
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-const mainMenu = document.getElementById("menu");
-const gameover = document.getElementById("gameover");
-const startBtn = document.getElementById("startBtn");
-const retryBtn = document.getElementById("retryBtn");
-const resultText = document.getElementById("resultText");
-
-const seWin = document.getElementById("seWin");
-const seLose = document.getElementById("seLose");
-const seHit = document.getElementById("seHit");
-
-let question = "";
-let answer = 0;
-let playerInput = ""; // ← 変更
-let cpuTime = 0;
-let playerAnswered = false;
-let gameRunning = false;
+let questionSets = [];
+let currentSet = null;
+let current = 0;
 let score = 0;
-let difficulty = 1200;
 
-function randomQuestion() {
-  let a, b, op;
-  if (Math.random() < 0.5) {
-    // 掛け算
-    a = Math.floor(Math.random() * 9) + 1;
-    b = Math.floor(Math.random() * 9) + 1;
-    op = "×";
-    answer = a * b;
-  } else {
-    // 割り算（割り切れるもののみ）
-    b = Math.floor(Math.random() * 9) + 1;
-    answer = Math.floor(Math.random() * 9) + 1;
-    a = b * answer;
-    op = "÷";
+// DOM
+const selectScreen = document.getElementById("select-screen");
+const quizElem = document.getElementById("quiz");
+const resultElem = document.getElementById("result");
+const scoreListElem = document.getElementById("score-list");
+const selectDiv = document.getElementById("selectSet");
+const qElem = document.getElementById("question");
+const oElem = document.getElementById("options");
+const pBar = document.getElementById("progress-bar");
+const scoreElem = document.getElementById("score");
+const finalScore = document.getElementById("final-score");
+const restartBtn = document.getElementById("restart-btn");
+const titleElem = document.getElementById("set-title");
+const showScoresBtn = document.getElementById("show-scores");
+const scoreItems = document.getElementById("score-items");
+const backBtn = document.getElementById("back-btn");
+const resetBtn = document.getElementById("reset-btn");
+
+// -------------------- JSON読み込み --------------------
+async function loadSets() {
+  try {
+    const res = await fetch("questions.json"); // JSONファイル名
+    if (!res.ok) throw new Error("JSON読み込み失敗");
+    questionSets = await res.json();
+
+    // options をシャッフルして元の配列に上書き
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array; // シャッフル済み配列を返す
+    }
+
+    questionSets.forEach(subject => {
+      subject.questions.forEach(q => {
+        q.options = shuffleArray(q.options); // 上書き
+      });
+    });
+
+    renderSetButtons();
+  } catch (e) {
+    selectDiv.textContent = "問題データを読み込めませんでした。";
+    console.error(e);
   }
-  question = `${a} ${op} ${b} = ?`;
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#fff";
-  ctx.font = "30px Arial";
-  ctx.fillText(`問題: ${question}`, 150, 150);
 
-  ctx.fillStyle = "#0f0";
-  ctx.fillText(`あなたの答え: ${playerInput}`, 150, 200); // ← 修正
-
-  ctx.fillStyle = "#f44";
-  ctx.fillText(`敵が狙っている...`, 150, 250);
-
-  ctx.fillStyle = "#FFD700";
-  ctx.fillText(`連勝数: ${score}`, 450, 50);
+// -------------------- セット選択 --------------------
+function renderSetButtons() {
+  selectDiv.innerHTML = "";
+  questionSets.forEach((set, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = set.title;
+    btn.className = "option";
+    btn.addEventListener("click", () => startSet(index));
+    selectDiv.appendChild(btn);
+  });
 }
 
-function startGame() {
+// -------------------- クイズ開始 --------------------
+function startSet(index) {
+  currentSet = questionSets[index];
+  current = 0;
   score = 0;
-  mainMenu.style.display = "none";
-  gameover.style.display = "none";
-  gameRunning = true;
-  nextQuestion();
+  titleElem.textContent = currentSet.title;
+  selectScreen.style.display = "none";
+  scoreListElem.style.display = "none";
+  quizElem.style.display = "block";
+  loadQuestion();
 }
 
-function nextQuestion() {
-  playerAnswered = false;
-  playerInput = ""; // ← 修正
-  randomQuestion();
-  draw();
-  cpuTime = Math.random() * difficulty + 500;
-  setTimeout(cpuAnswer, cpuTime);
+// -------------------- 問題読み込み --------------------
+function loadQuestion() {
+  const q = currentSet.questions[current];
+  const qNumberElem = document.getElementById("question-number");
+  qElem.textContent = q.question;
+  oElem.innerHTML = "";
+
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.className = "option";
+    btn.onclick = () => selectAnswer(btn, opt, q.answer);
+    oElem.appendChild(btn);
+  });
+  pBar.style.width = `${(current / currentSet.questions.length) * 100}%`;
+  scoreElem.textContent = `スコア: ${score}`;
+  qNumberElem.textContent = `${currentSet.questions.length}問中 ${current + 1}問目`;
 }
 
-function cpuAnswer() {
-  if (!playerAnswered && gameRunning) {
-    lose();
-  }
-}
 
-function playerSubmit() {
-  if (!gameRunning) return;
-  playerAnswered = true;
-  seHit.play();
+// -------------------- 回答判定 --------------------
+function selectAnswer(btn, choice, correctAnswers) {
+  const buttons = oElem.querySelectorAll(".option");
+  buttons.forEach(b => b.disabled = true);
 
-  if (Number(playerInput) === answer) { // ← 修正
-    win();
+  if (correctAnswers.includes(choice)) {
+    btn.classList.add("correct");
+    score += 10;
   } else {
-    lose();
+    btn.classList.add("wrong");
+    buttons.forEach(b => {
+      if (correctAnswers.includes(b.textContent)) b.classList.add("correct");
+    });
+  }
+
+  scoreElem.textContent = `スコア: ${score}`;
+  setTimeout(nextQuestion, 900);
+}
+
+// -------------------- 次の問題 --------------------
+function nextQuestion() {
+  current++;
+  if (current < currentSet.questions.length) {
+    loadQuestion();
+  } else {
+    finishQuiz();
   }
 }
 
-function win() {
-  score++;
-  seWin.play();
-  drawEffect("勝ち！", "#0f0");
-  setTimeout(nextQuestion, 1000);
+// -------------------- 結果表示 --------------------
+function finishQuiz() {
+  quizElem.style.display = "none";
+  resultElem.style.display = "block";
+  pBar.style.width = "100%";
+
+  const maxScore = currentSet.questions.length * 10;
+  finalScore.innerHTML = `最終スコア: ${score} / ${maxScore}`;
+
+  saveHighScore(currentSet.title, score);
+  const best = getHighScore(currentSet.title);
+  const bestMsg = (score >= best)
+    ? "🎉 最高スコアを更新しました！"
+    : `これまでの最高スコア: ${best}`;
+  finalScore.innerHTML += `<br>${bestMsg}`;
 }
 
-function lose() {
-  seLose.play();
-  gameRunning = false;
-  gameover.style.display = "block";
-  resultText.textContent = `負けてしまった 連勝数: ${score}`;
+// -------------------- スコア管理 --------------------
+function saveHighScore(title, newScore) {
+  const key = `score_${title}`;
+  const oldScore = parseInt(localStorage.getItem(key) || "0");
+  if (newScore > oldScore) localStorage.setItem(key, newScore);
+}
+function getHighScore(title) {
+  const key = `score_${title}`;
+  return parseInt(localStorage.getItem(key) || "0");
 }
 
-function drawEffect(text, color) {
-  ctx.fillStyle = color;
-  ctx.font = "60px Arial Black";
-  ctx.fillText(text, 250, 300);
-}
-
-window.addEventListener("keydown", (e) => {
-  if (!gameRunning) return;
-  if (e.key >= "0" && e.key <= "9") {
-    playerInput += e.key;
-  } else if (e.key === "Backspace") {
-    playerInput = playerInput.slice(0, -1);
-  } else if (e.key === "Enter") {
-    playerSubmit();
+// -------------------- ボタン --------------------
+restartBtn.onclick = () => {
+  resultElem.style.display = "none";
+  selectScreen.style.display = "block";
+};
+showScoresBtn.onclick = () => {
+  scoreItems.innerHTML = "";
+  questionSets.forEach(set => {
+    const li = document.createElement("li");
+    li.textContent = `${set.title}：${getHighScore(set.title)}点`;
+    scoreItems.appendChild(li);
+  });
+  selectScreen.style.display = "none";
+  scoreListElem.style.display = "block";
+};
+backBtn.onclick = () => {
+  scoreListElem.style.display = "none";
+  selectScreen.style.display = "block";
+};
+resetBtn.onclick = () => {
+  if(confirm("本当に全てのスコアを削除しますか？")) {
+    localStorage.clear();
+    alert("スコアデータをリセットしました！");
+    scoreItems.innerHTML = "<li>データがありません。</li>";
   }
-  draw();
-});
+};
 
-startBtn.onclick = () => {
-  difficulty = Number(document.getElementById("difficulty").value);
-  startGame();
-};
-retryBtn.onclick = () => {
-  mainMenu.style.display = "block";
-  gameover.style.display = "none";
-};
-mainMenu.style.display = "block";
+// -------------------- 初期化 --------------------
+loadSets();
