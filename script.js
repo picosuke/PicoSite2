@@ -334,11 +334,6 @@ resetBtn.onclick = () => {
 // -------------------- 初期化 --------------------
 loadSets();
 
-
-
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-
     // Firebase 初期化
     const firebaseConfig = {
       apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
