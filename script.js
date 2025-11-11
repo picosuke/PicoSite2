@@ -350,6 +350,9 @@ loadSets();
 
     // Google ログイン
 // Google ログイン
+
+document.getElementById("main2_c").style.display = "block";
+
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 document.getElementById('googleLogin').onclick = () => {
   auth.signInWithPopup(googleProvider)
@@ -359,7 +362,7 @@ document.getElementById('googleLogin').onclick = () => {
 
       // if文で判定
       if (result.credential && result.credential.providerId === 'google.com') {
-        console.log('Googleでログインしました:', user.email);
+        document.getElementById("main2_c").style.display = "block";
       }
     })
     .catch(error => {
@@ -376,7 +379,7 @@ document.getElementById('microsoftLogin').onclick = () => {
 
       // Microsoft は OAuthProvider なので providerId は 'microsoft.com'
       if (result.credential && result.credential.providerId === 'microsoft.com') {
-        console.log('Microsoftでログインしました:', user.email);
+        document.getElementById("main2_c").style.display = "none";
       }
     })
     .catch(error => {
