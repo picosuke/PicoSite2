@@ -354,25 +354,37 @@ loadSets();
     const auth = firebase.auth();
 
     // Google ログイン
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    document.getElementById('googleLogin').onclick = () => {
-      auth.signInWithPopup(googleProvider)
-        .then(result => {
-          alert('ログイン成功: ' + result.user.email);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    };
+// Google ログイン
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+document.getElementById('googleLogin').onclick = () => {
+  auth.signInWithPopup(googleProvider)
+    .then(result => {
+      const user = result.user;
+      const providerId = result.providerId; // この行は compat では 'result.credential.providerId' も場合によって使用
 
-    // Microsoft ログイン
-    const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
-    document.getElementById('microsoftLogin').onclick = () => {
-      auth.signInWithPopup(microsoftProvider)
-        .then(result => {
-          alert('ログイン成功: ' + result.user.email);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    };
+      // if文で判定
+      if (result.credential && result.credential.providerId === 'google.com') {
+        console.log('Googleでログインしました:', user.email);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
+// Microsoft ログイン
+const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
+document.getElementById('microsoftLogin').onclick = () => {
+  auth.signInWithPopup(microsoftProvider)
+    .then(result => {
+      const user = result.user;
+
+      // Microsoft は OAuthProvider なので providerId は 'microsoft.com'
+      if (result.credential && result.credential.providerId === 'microsoft.com') {
+        console.log('Microsoftでログインしました:', user.email);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
