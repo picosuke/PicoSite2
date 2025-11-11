@@ -340,12 +340,13 @@ loadSets();
   import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "あなたのAPIキー",
-    authDomain: "your-app.firebaseapp.com",
-    projectId: "your-app",
-    storageBucket: "your-app.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:xxxxxxx"
+    apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
+    authDomain: "roguin-7ee69.firebaseapp.com",
+    projectId: "roguin-7ee69",
+    storageBucket: "roguin-7ee69.firebasestorage.app",
+    messagingSenderId: "255974650605",
+    appId: "1:255974650605:web:c46301b9a0da7f958a52e4",
+    measurementId: "G-PXRMCCHVLC"
   };
 
   const app = initializeApp(firebaseConfig);
