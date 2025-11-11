@@ -333,3 +333,37 @@ resetBtn.onclick = () => {
 
 // -------------------- 初期化 --------------------
 loadSets();
+
+
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "あなたのAPIキー",
+    authDomain: "your-app.firebaseapp.com",
+    projectId: "your-app",
+    storageBucket: "your-app.appspot.com",
+    messagingSenderId: "1234567890",
+    appId: "1:1234567890:web:xxxxxxx"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  // ログインボタン
+  document.getElementById("loginBtn").onclick = () => {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        const user = result.user;
+        document.getElementById("status").textContent = `ログイン中: ${user.displayName}`;
+      })
+      .catch(error => console.error(error));
+  };
+
+  // ログアウトボタン
+  document.getElementById("logoutBtn").onclick = () => {
+    signOut(auth);
+    document.getElementById("status").textContent = "ログアウトしました";
+  };
