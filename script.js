@@ -351,8 +351,6 @@ loadSets();
     // Google ログイン
 // Google ログイン
 
-document.getElementById("main2_c").style.display = "none";
-document.getElementById("main2_t").style.display = "block";
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 document.getElementById('googleLogin').onclick = () => {
@@ -360,12 +358,6 @@ document.getElementById('googleLogin').onclick = () => {
     .then(result => {
       const user = result.user;
       const providerId = result.providerId; // この行は compat では 'result.credential.providerId' も場合によって使用
-
-      // if文で判定
-      if (result.credential && result.credential.providerId === 'google.com') {
-        document.getElementById("main2_c").style.display = "block";
-        document.getElementById("main2_t").style.display = "none";
-      }
     })
     .catch(error => {
       console.error(error);
@@ -375,8 +367,10 @@ document.getElementById('googleLogin').onclick = () => {
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    console.log("✅ ログイン中:", user.email);
+        document.getElementById("main2_c").style.display = "block";
+        document.getElementById("main2_t").style.display = "none";
   } else {
-    console.log("🚪 ログアウト状態");
+        document.getElementById("main2_c").style.display = "none";
+        document.getElementById("main2_t").style.display = "block";
   }
 });
