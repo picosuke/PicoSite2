@@ -334,58 +334,57 @@ resetBtn.onclick = () => {
 // -------------------- 初期化 --------------------
 loadSets();
 
-    // Firebase 初期化
-    const firebaseConfig2 = {
-      apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
-      authDomain: "roguin-7ee69.firebaseapp.com",
-      projectId: "roguin-7ee69",
-      storageBucket: "roguin-7ee69.firebasestorage.app",
-      messagingSenderId: "255974650605",
-      appId: "1:255974650605:web:c46301b9a0da7f958a52e4",
-      measurementId: "G-PXRMCCHVLC"
-    };
-    firebase.initializeApp(firebaseConfig2);
+// Firebase 初期化
+const firebaseConfig2 = {
+  apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
+  authDomain: "roguin-7ee69.firebaseapp.com",
+  projectId: "roguin-7ee69",
+  storageBucket: "roguin-7ee69.firebasestorage.app",
+  messagingSenderId: "255974650605",
+  appId: "1:255974650605:web:c46301b9a0da7f958a52e4",
+  measurementId: "G-PXRMCCHVLC"
+};
+firebase.initializeApp(firebaseConfig2);
 
-    const auth = firebase.auth();
+const auth = firebase.auth();
 
-    // Google ログイン
-// Google ログイン
-
-
+// ✅ Googleログイン
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 document.getElementById('googleLogin').onclick = () => {
-  auth.signInWithPopup(googleProvider)
-    .then(result => {
-      const user = result.user;
-      const providerId = result.providerId; // この行は compat では 'result.credential.providerId' も場合によって使用
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  auth.signInWithRedirect(googleProvider);
 };
 
+// ✅ リダイレクト結果を受け取る
+auth.getRedirectResult()
+  .then(result => {
+    if (result.user) {
+      console.log("✅ ログイン完了:", result.user.displayName);
+    }
+  })
+  .catch(error => {
+    console.error("リダイレクトエラー:", error);
+  });
 
-firebase.auth().onAuthStateChanged(user => {
+// ✅ ログイン状態の監視
+auth.onAuthStateChanged(user => {
   if (user) {
-        document.getElementById("main2_c").style.display = "block";
-        document.getElementById("main2_t").style.display = "none";
+    document.getElementById("main2_c").style.display = "block";
+    document.getElementById("main2_t").style.display = "none";
   } else {
-        document.getElementById("main2_c").style.display = "none";
-        document.getElementById("main2_t").style.display = "block";
+    document.getElementById("main2_c").style.display = "none";
+    document.getElementById("main2_t").style.display = "block";
   }
 });
 
-
-
-  document.getElementById("logoutBtn").onclick = () => {
-    firebase.auth().signOut()
-      .then(() => {
-        console.log("✅ ログアウトしました");
-        alert("ログアウトしました");
-        // 画面を更新する場合
-        location.reload();
-      })
-      .catch(error => {
-        console.error("ログアウトエラー:", error);
-      });
-  };
+// ✅ ログアウト
+document.getElementById("logoutBtn").onclick = () => {
+  auth.signOut()
+    .then(() => {
+      console.log("✅ ログアウトしました");
+      alert("ログアウトしました");
+      location.reload(); // ページ更新
+    })
+    .catch(error => {
+      console.error("ログアウトエラー:", error);
+    });
+};
