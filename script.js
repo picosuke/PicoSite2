@@ -374,3 +374,18 @@ firebase.auth().onAuthStateChanged(user => {
         document.getElementById("main2_t").style.display = "block";
   }
 });
+
+
+
+  document.getElementById("logoutBtn").onclick = () => {
+    firebase.auth().signOut()
+      .then(() => {
+        console.log("✅ ログアウトしました");
+        alert("ログアウトしました");
+        // 画面を更新する場合
+        location.reload();
+      })
+      .catch(error => {
+        console.error("ログアウトエラー:", error);
+      });
+  };
