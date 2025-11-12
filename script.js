@@ -351,7 +351,8 @@ loadSets();
     // Google ログイン
 // Google ログイン
 
-document.getElementById("main2_c").style.display = "block";
+document.getElementById("main2_c").style.display = "none";
+document.getElementById("main2_t").style.display = "block";
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 document.getElementById('googleLogin').onclick = () => {
@@ -363,23 +364,7 @@ document.getElementById('googleLogin').onclick = () => {
       // if文で判定
       if (result.credential && result.credential.providerId === 'google.com') {
         document.getElementById("main2_c").style.display = "block";
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
-};
-
-// Microsoft ログイン
-const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
-document.getElementById('microsoftLogin').onclick = () => {
-  auth.signInWithPopup(microsoftProvider)
-    .then(result => {
-      const user = result.user;
-
-      // Microsoft は OAuthProvider なので providerId は 'microsoft.com'
-      if (result.credential && result.credential.providerId === 'microsoft.com') {
-        document.getElementById("main2_c").style.display = "none";
+        document.getElementById("main2_t").style.display = "none";
       }
     })
     .catch(error => {
