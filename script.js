@@ -335,7 +335,7 @@ resetBtn.onclick = () => {
 loadSets();
 
     // Firebase 初期化
-    const firebaseConfig = {
+    const firebaseConfig2 = {
       apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
       authDomain: "roguin-7ee69.firebaseapp.com",
       projectId: "roguin-7ee69",
@@ -344,7 +344,7 @@ loadSets();
       appId: "1:255974650605:web:c46301b9a0da7f958a52e4",
       measurementId: "G-PXRMCCHVLC"
     };
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig2);
 
     const auth = firebase.auth();
 
