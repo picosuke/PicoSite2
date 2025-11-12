@@ -371,3 +371,13 @@ document.getElementById('googleLogin').onclick = () => {
       console.error(error);
     });
 };
+
+
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    console.log("✅ ログイン中:", user.email);
+    document.body.innerHTML = `<h2>${user.displayName} さんでログイン中 (${user.email})</h2>`;
+  } else {
+    console.log("🚪 ログアウト状態");
+  }
+});
