@@ -369,7 +369,7 @@ auth.onAuthStateChanged(user => {
 
     document.getElementById("main2_c").style.display = "block";
     document.getElementById("main2_t").style.display = "none";
-    let initial = (result.user?.trim()?.charAt(0) || "").toUpperCase();
+    let initial = (result.email?.trim()?.charAt(0) || "").toUpperCase();
     document.getElementById("you_name").textContent = initial;
   } else {
     console.log("未ログイン");
