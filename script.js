@@ -355,7 +355,8 @@ document.getElementById("googleLogin").onclick = () => {
   auth.signInWithPopup(googleProvider)
     .then(result => {
       console.log("Googleログイン成功:", result.user);
-      document.getElementById("you_name").innerHTML = "U"
+      let initial = (result.user?.trim()?.charAt(0) || "").toUpperCase();
+      document.getElementById("you_name").textContent = initial;
     })
     .catch(error => {
       console.error("Googleログインエラー:", error);
