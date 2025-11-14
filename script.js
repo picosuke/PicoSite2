@@ -334,7 +334,6 @@ resetBtn.onclick = () => {
 // -------------------- 初期化 --------------------
 loadSets();
 
-// Firebase 初期化
 const firebaseConfig2 = {
   apiKey: "AIzaSyClGlBau_2lk1cty7ZbomKH5F39URXOlw4",
   authDomain: "roguin-7ee69.firebaseapp.com",
@@ -348,41 +347,44 @@ firebase.initializeApp(firebaseConfig2);
 
 const auth = firebase.auth();
 
-// ✅ Googleログイン
+
+// -------------------- Google ログイン（POPUP） --------------------
 const googleProvider = new firebase.auth.GoogleAuthProvider();
-document.getElementById('googleLogin').onclick = () => {
-  auth.signInWithRedirect(googleProvider);
+
+document.getElementById("googleLogin").onclick = () => {
+  auth.signInWithPopup(googleProvider)
+    .then(result => {
+      console.log("Googleログイン成功:", result.user);
+    })
+    .catch(error => {
+      console.error("Googleログインエラー:", error);
+    });
 };
 
-// ✅ リダイレクト結果を受け取る
-auth.getRedirectResult()
-  .then(result => {
-    if (result.user) {
-      console.log("✅ ログイン完了:", result.user.displayName);
-    }
-  })
-  .catch(error => {
-    console.error("リダイレクトエラー:", error);
-  });
 
-// ✅ ログイン状態の監視
+// -------------------- ログイン状態の監視 --------------------
 auth.onAuthStateChanged(user => {
   if (user) {
+    console.log("ログイン中:", user.email);
+
     document.getElementById("main2_c").style.display = "block";
     document.getElementById("main2_t").style.display = "none";
   } else {
+    console.log("未ログイン");
+
     document.getElementById("main2_c").style.display = "none";
     document.getElementById("main2_t").style.display = "block";
   }
 });
 
-// ✅ ログアウト
+
+// -------------------- ログアウト --------------------
 document.getElementById("logoutBtn").onclick = () => {
   auth.signOut()
     .then(() => {
-      console.log("✅ ログアウトしました");
+      console.log("ログアウト完了");
       alert("ログアウトしました");
-      location.reload(); // ページ更新
+      location.reload();
     })
     .catch(error => {
       console.error("ログアウトエラー:", error);
