@@ -332,6 +332,24 @@ resetBtn.onclick = () => {
 };
 
 // -------------------- 初期化 --------------------
+
+function nameToColor(name) {
+    // 文字列をハッシュ化
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // ハッシュ値から色を生成（RGB）
+    let color = '#';
+    for (let i = 0; i < 3; i++) {
+        let value = (hash >> (i * 8)) & 0xFF;
+        color += ('00' + value.toString(16)).slice(-2);
+    }
+    return color;
+}
+
+
 loadSets();
 
 const firebaseConfig2 = {
@@ -371,6 +389,7 @@ auth.onAuthStateChanged(user => {
     document.getElementById("main2_t").style.display = "none";
     let initial = (user.email?.trim()?.charAt(0) || "").toUpperCase();
     document.getElementById("you_name").textContent = initial;
+    document.getElementById("you_name").style.backgroundColor = nameToColor(user.email);
   } else {
     console.log("未ログイン");
 
