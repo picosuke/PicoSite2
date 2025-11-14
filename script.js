@@ -376,6 +376,7 @@ auth.onAuthStateChanged(user => {
 
     document.getElementById("main2_c").style.display = "none";
     document.getElementById("main2_t").style.display = "block";
+    document.getElementById("you_name").style.display = "none";
   }
 });
 
