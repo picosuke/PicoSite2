@@ -355,8 +355,6 @@ document.getElementById("googleLogin").onclick = () => {
   auth.signInWithPopup(googleProvider)
     .then(result => {
       console.log("Googleログイン成功:", result.user);
-      let initial = (result.user?.trim()?.charAt(0) || "").toUpperCase();
-      document.getElementById("you_name").textContent = initial;
     })
     .catch(error => {
       console.error("Googleログインエラー:", error);
@@ -371,6 +369,8 @@ auth.onAuthStateChanged(user => {
 
     document.getElementById("main2_c").style.display = "block";
     document.getElementById("main2_t").style.display = "none";
+    let initial = (result.user?.trim()?.charAt(0) || "").toUpperCase();
+    document.getElementById("you_name").textContent = initial;
   } else {
     console.log("未ログイン");
 
