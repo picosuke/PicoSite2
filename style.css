@@ -483,12 +483,15 @@ main.content.active {
 }
 
 #you_name {
-  border: 1px solid #aaa;
-  border-radius: 50%;
-  padding: 8px;
-  width: 40px;
+  width: 40px;          /* 丸の大きさ */
   height: 40px;
-  font-family: inherit;
-  font-size: 35px;
-  text-align: center;
+  background-color: #C2185B; /* 赤っぽい色（好きに変更OK） */
+  color: white;          /* 文字色 */
+  border-radius: 50%;    /* これで丸になる */
+  display: flex;         /* 中央寄せに必要 */
+  align-items: center;   /* 縦中央 */
+  justify-content: center; /* 横中央 */
+  font-size: 20px;       /* 文字サイズ */
+  font-weight: bold;     /* 太字 */
+  user-select: none;     /* 文字選択禁止（見た目が自然になる） */
 }
