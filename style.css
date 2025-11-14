@@ -484,8 +484,10 @@ main.content.active {
 
 #you_name {
   border: 1px solid #aaa;
-  border-radius: 50px;
+  border-radius: 50%;
   padding: 8px;
+  width: 60px;
+  height: 60px;
   font-family: inherit;
   font-size: 40px;
 }
