@@ -91,8 +91,9 @@ const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
 const sendBtn2 = document.getElementById("chat-send");
 // 🔑 あなたのOpenAI APIキーをここに
-const OPENAI_API_KEY = "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";
-// HTMLをエスケープして「タグを実行させない」
+const OPENAI_API_KEY = "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";
+
+// HTMLを安全に表示
 function escapeHTML(str) {
   return str
     .replace(/&/g, "&amp;")
@@ -101,12 +102,16 @@ function escapeHTML(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+// メッセージ送信
 async function sendMessage() {
   const userMessage = input.value.trim();
   if (!userMessage) return;
+
   addMessage("user", userMessage);
   input.value = "";
   addMessage("assistant", "ChatGPTが考え中... 🤔");
+
   try {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -122,16 +127,25 @@ async function sendMessage() {
         ]
       })
     });
+
+    if (!res.ok) {
+      // 401などのエラーを表示
+      const errText = await res.text();
+      throw new Error(`${res.status} - ${errText}`);
+    }
+
     const data = await res.json();
     const reply = data.choices[0].message.content.trim();
-    chatBox.lastChild.remove();
+    chatBox.lastChild.remove(); // 「考え中」を削除
     addMessage("assistant", reply);
+
   } catch (err) {
     chatBox.lastChild.remove();
     addMessage("assistant", "⚠️ エラーが発生しました: " + err.message);
   }
 }
-// ✅ HTMLをエスケープして安全に表示
+
+// メッセージ追加
 function addMessage(role, text) {
   const div = document.createElement("div");
   div.className = "message " + role;
@@ -139,6 +153,7 @@ function addMessage(role, text) {
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
+
 // Enterで送信 / Shift+Enterで改行
 input.addEventListener("keypress", e => {
   if (e.key === "Enter" && !e.shiftKey) {
