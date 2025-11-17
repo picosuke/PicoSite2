@@ -92,7 +92,17 @@
 </main>
   
 <main id="main4" class="content">
-  PicoTube
+    <h1>🎬 動画ビューア</h1>
+
+    <!-- 動画一覧 -->
+    <div id="videoList" class="video-list"></div>
+
+    <!-- メイン動画（最初は非表示） -->
+    <div id="videoContainer" class="video-container" style="display:none;">
+      <button id="backBtn" class="video-btn">← 一覧に戻る</button>
+      <video id="videoPlayer" controls></video>
+      <p id="videoNumber"></p>
+    </div>
 </main>
   
 <main id="main5" class="content">
