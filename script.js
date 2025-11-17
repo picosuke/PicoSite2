@@ -418,3 +418,52 @@ document.getElementById("logoutBtn").onclick = () => {
       console.error("ログアウトエラー:", error);
     });
 };
+
+//ここから動画
+
+const totalVideos = 2; // 動画数
+const videoList = document.getElementById("videoList");
+const videoContainer = document.getElementById("videoContainer");
+const videoPlayer = document.getElementById("videoPlayer");
+const videoNumber = document.getElementById("videoNumber");
+const backBtn = document.getElementById("backBtn");
+
+// 一覧サムネ作成
+for (let i = 1; i <= totalVideos; i++) {
+  const thumb = document.createElement("img");
+  thumb.src = `videos/thumb${i}.jpg`; // サムネ画像は thumb1.jpg, thumb2.jpg など
+  thumb.classList.add("thumbnail");
+  thumb.alt = `動画 ${i}`;
+  thumb.addEventListener("click", () => playVideo(i));
+  videoList.appendChild(thumb);
+}
+
+// 動画再生画面に切替
+function playVideo(index) {
+  videoPlayer.src = `videos/${index}.mp4`;
+  videoNumber.textContent = `再生中: 動画 ${index}`;
+  videoList.style.display = "none";
+  videoContainer.style.display = "block";
+  videoPlayer.play();
+}
+
+// 戻るボタン
+backBtn.addEventListener("click", () => {
+  videoPlayer.pause();
+  videoPlayer.src = "";
+  videoContainer.style.display = "none";
+  videoList.style.display = "flex";
+});
+
+// キーボード操作（動画再生中のみ）
+document.addEventListener("keydown", (e) => {
+  if (videoContainer.style.display === "block") {
+    switch (e.key) {
+      case " ":
+        e.preventDefault();
+        if (videoPlayer.paused) videoPlayer.play();
+        else videoPlayer.pause();
+        break;
+    }
+  }
+});
