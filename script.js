@@ -91,7 +91,7 @@ const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
 const sendBtn2 = document.getElementById("chat-send");
 // 🔑 あなたのOpenAI APIキーをここに
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 // HTMLをエスケープして「タグを実行させない」
 function escapeHTML(str) {
   return str
