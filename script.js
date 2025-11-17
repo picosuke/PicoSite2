@@ -91,7 +91,7 @@ const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
 const sendBtn2 = document.getElementById("chat-send");
 // 🔑 あなたのOpenAI APIキーをここに
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 
 // HTMLを安全に表示
 function escapeHTML(str) {
