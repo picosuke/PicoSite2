@@ -87,71 +87,59 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 });
 
 
+//chatgpt
+const API_KEY = "YOUR_API_KEY_HERE";
+
 const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
-const sendBtn2 = document.getElementById("chat-send");
-// 🔑 あなたのOpenAI APIキーをここに
-const OPENAI_API_KEY = "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";
+const sendBtn = document.getElementById("chat-send");
 
-// HTMLを安全に表示
 function escapeHTML(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-// メッセージ送信
-async function sendMessage() {
-  const userMessage = input.value.trim();
-  if (!userMessage) return;
-
-  addMessage("user", userMessage);
-  input.value = "";
-  addMessage("assistant", "ChatGPTが考え中... 🤔");
-
-  try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "あなたは親切なAIアシスタントです。HTMLなどのコードはエスケープして安全に表示してください。" },
-          { role: "user", content: userMessage }
-        ]
-      })
-    });
-
-    if (!res.ok) {
-      // 401などのエラーを表示
-      const errText = await res.text();
-      throw new Error(`${res.status} - ${errText}`);
-    }
-
-    const data = await res.json();
-    const reply = data.choices[0].message.content.trim();
-    chatBox.lastChild.remove(); // 「考え中」を削除
-    addMessage("assistant", reply);
-
-  } catch (err) {
-    chatBox.lastChild.remove();
-    addMessage("assistant", "⚠️ エラーが発生しました: " + err.message);
-  }
+  return str.replace(/[&<>"']/g, t => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[t]));
 }
 
 // メッセージ追加
 function addMessage(role, text) {
   const div = document.createElement("div");
   div.className = "message " + role;
-  div.innerHTML = (role === "user" ? "👤 <b>あなた</b>:<br>" : "🤖 <b>ChatGPT</b>:<br>") + escapeHTML(text).replace(/\n/g, "<br>");
+  div.innerHTML = (role === "user" ? "👤 <b>あなた</b>:<br>" : "🤖 <b>ChatGPT</b>:<br>")
+    + escapeHTML(text).replace(/\n/g, "<br>");
+  
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// ChatGPT へ送信
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage("user", text);
+  input.value = "";
+
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: text }]
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content ?? "(エラー)";
+
+    addMessage("assistant", reply);
+
+  } catch (err) {
+    addMessage("assistant", "エラー: " + err.message);
+  }
 }
 
 // Enterで送信 / Shift+Enterで改行
@@ -161,7 +149,9 @@ input.addEventListener("keypress", e => {
     sendMessage();
   }
 });
-sendBtn2.addEventListener("click", sendMessage);
+
+sendBtn.addEventListener("click", sendMessage);
+
 
 //学習
 
