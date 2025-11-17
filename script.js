@@ -88,7 +88,7 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 
 
 //chatgpt
-const API_KEY = "YOUR_API_KEY_HERE";
+const API_KEY = "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";
 
 const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
