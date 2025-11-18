@@ -92,7 +92,7 @@ const API_KEY = "sk-proj-r4SYRkn6gFUCH8IPHrn9ctfAjnKYxA4Lc8ZDzzjW5weIHc-An16SxbU
 
 const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
-const sendBtn = document.getElementById("chat-send");
+const sendBtn2 = document.getElementById("chat-send");
 
 function escapeHTML(str) {
   return str.replace(/[&<>"']/g, t => ({
@@ -150,7 +150,7 @@ input.addEventListener("keypress", e => {
   }
 });
 
-sendBtn.addEventListener("click", sendMessage);
+sendBtn2.addEventListener("click", sendMessage);
 
 
 //学習
