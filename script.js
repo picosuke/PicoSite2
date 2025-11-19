@@ -88,7 +88,7 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 
 
 //chatgpt
-const API_KEY = "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";
+const API_KEY = "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";
 
 const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("chat-input");
