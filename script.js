@@ -360,7 +360,7 @@ const videos = [
   {
     src: "https://d.kuku.lu/zesfjf6pt",     // ← 動画URL
     thumb: "https://d.kuku.lu/8bg672s2k",  // ← サムネURL
-    title: "なんかきれいなや                  // ← 表示する名前
+    title: "なんかきれいなやつ"                // ← 表示する名前
   },
   {
     src: "https://d.kuku.lu/abcd1234",      // ← 動画URL
