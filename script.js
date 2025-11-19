@@ -426,7 +426,7 @@ const videoList = document.getElementById("videoList");
 const videoContainer = document.getElementById("videoContainer");
 const videoPlayer = document.getElementById("videoPlayer");
 const videoNumber = document.getElementById("videoNumber");
-const backBtn = document.getElementById("backBtn");
+const backBtn2 = document.getElementById("backBtn");
 
 // 一覧サムネ作成
 for (let i = 1; i <= totalVideos; i++) {
@@ -448,7 +448,7 @@ function playVideo(index) {
 }
 
 // 戻るボタン
-backBtn.addEventListener("click", () => {
+backBtn2.addEventListener("click", () => {
   videoPlayer.pause();
   videoPlayer.src = "";
   videoContainer.style.display = "none";
