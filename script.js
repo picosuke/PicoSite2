@@ -87,71 +87,6 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 });
 
 
-//chatgpt
-const API_KEY = "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";
-
-const chatBox = document.getElementById("chat-box");
-const input = document.getElementById("chat-input");
-const sendBtn2 = document.getElementById("chat-send");
-
-function escapeHTML(str) {
-  return str.replace(/[&<>"']/g, t => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  }[t]));
-}
-
-// メッセージ追加
-function addMessage(role, text) {
-  const div = document.createElement("div");
-  div.className = "message " + role;
-  div.innerHTML = (role === "user" ? "👤 <b>あなた</b>:<br>" : "🤖 <b>ChatGPT</b>:<br>")
-    + escapeHTML(text).replace(/\n/g, "<br>");
-  
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// ChatGPT へ送信
-async function sendMessage() {
-  const text = input.value.trim();
-  if (!text) return;
-
-  addMessage("user", text);
-  input.value = "";
-
-  try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: text }]
-      })
-    });
-
-    const data = await res.json();
-    const reply = data.choices?.[0]?.message?.content ?? "(エラー)";
-
-    addMessage("assistant", reply);
-
-  } catch (err) {
-    addMessage("assistant", "エラー: " + err.message);
-  }
-}
-
-// Enterで送信 / Shift+Enterで改行
-input.addEventListener("keypress", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-
-sendBtn2.addEventListener("click", sendMessage);
-
 
 //学習
 
@@ -421,49 +356,65 @@ document.getElementById("logoutBtn").onclick = () => {
 
 //ここから動画
 
-const totalVideos = 2; // 動画数
+const videos = [
+  {
+    src: "https://d.kuku.lu/zesfjf6pt",     // ← 動画URL
+    thumb: "https://d.kuku.lu/8bg672s2k",  // ← サムネURL
+    title: "なんかきれいなや                  // ← 表示する名前
+  },
+  {
+    src: "https://d.kuku.lu/abcd1234",      // ← 動画URL
+    thumb: "https://d.kuku.lu/yyyythumb2",  // ← サムネURL
+    title: "2つ目の動画"
+  }
+];
+
+
 const videoList = document.getElementById("videoList");
 const videoContainer = document.getElementById("videoContainer");
 const videoPlayer = document.getElementById("videoPlayer");
-const videoNumber = document.getElementById("videoNumber");
+const videoTitle = document.getElementById("videoTitle");
 const backBtn2 = document.getElementById("backBtn");
 
-// 一覧サムネ作成
-for (let i = 1; i <= totalVideos; i++) {
-  const thumb = document.createElement("img");
-  thumb.src = `videos/thumb${i}.jpg`; // サムネ画像は thumb1.jpg, thumb2.jpg など
-  thumb.classList.add("thumbnail");
-  thumb.alt = `動画 ${i}`;
-  thumb.addEventListener("click", () => playVideo(i));
-  videoList.appendChild(thumb);
-}
+// 一覧リスト
+videos.forEach((v, i) => {
+  const item = document.createElement("div");
+  item.classList.add("videoItem");
 
-// 動画再生画面に切替
+  // サムネ（外部URLOK）
+  const thumb = document.createElement("img");
+  thumb.src = v.thumb;
+  thumb.classList.add("thumbnail");
+
+  // タイトルリンク
+  const link = document.createElement("a");
+  link.href = "#";
+  link.textContent = v.title;
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    playVideo(i);
+  });
+
+  item.appendChild(thumb);
+  item.appendChild(link);
+  videoList.appendChild(item);
+});
+
+// 再生処理
 function playVideo(index) {
-  videoPlayer.src = `videos/${index}.mp4`;
-  videoNumber.textContent = `再生中: 動画 ${index}`;
+  const v = videos[index];
+  videoPlayer.src = v.src;  // ← 外部URLでもOK
+  videoTitle.textContent = v.title;
   videoList.style.display = "none";
   videoContainer.style.display = "block";
   videoPlayer.play();
 }
 
-// 戻るボタン
+// 戻る
 backBtn2.addEventListener("click", () => {
   videoPlayer.pause();
   videoPlayer.src = "";
   videoContainer.style.display = "none";
-  videoList.style.display = "flex";
+  videoList.style.display = "block";
 });
 
-// キーボード操作（動画再生中のみ）
-document.addEventListener("keydown", (e) => {
-  if (videoContainer.style.display === "block") {
-    switch (e.key) {
-      case " ":
-        e.preventDefault();
-        if (videoPlayer.paused) videoPlayer.play();
-        else videoPlayer.pause();
-        break;
-    }
-  }
-});
