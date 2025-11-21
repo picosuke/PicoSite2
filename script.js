@@ -373,7 +373,8 @@ const videos = [
   }
 ];
 
-// YouTube ID を抽出する関数（ショートも通常動画も対応）
+
+// YouTube ID を抽出する関数
 function getYouTubeId(url) {
   const regExp = /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^\?&]+)/;
   const match = url.match(regExp);
@@ -416,13 +417,13 @@ function playVideo(url, title) {
   const videoId = getYouTubeId(url);
   if (!videoId) return;
 
+  // 埋め込み用URL
   const embedUrl = url.includes("shorts")
     ? `https://www.youtube.com/embed/${videoId}`
     : `https://www.youtube.com/embed/${videoId}`;
 
-  // iframeを使う場合
-  videoPlayer.outerHTML = `<iframe id="videoPlayer" width="100%" height="480" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
-
+  // iframe の src を変更するだけ
+  videoPlayer.src = embedUrl;
   videoTitle.textContent = title;
 
   videoList.style.display = "none";
@@ -431,8 +432,8 @@ function playVideo(url, title) {
 
 // 戻るボタン
 backBtn2.addEventListener("click", () => {
-  // iframe を空にして破棄
-  videoPlayer.outerHTML = `<iframe id="videoPlayer" width="100%" height="480" frameborder="0" allowfullscreen></iframe>`;
+  // src を空にして停止
+  videoPlayer.src = "";
   videoContainer.style.display = "none";
-  videoList.style.display = "flex"; // CSSの flex に戻す
+  videoList.style.display = "flex";
 });
