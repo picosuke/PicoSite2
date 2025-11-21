@@ -368,8 +368,8 @@ const videos = [
     title: "三つの新曲"
   },
   {
-    url: "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1",
-    title: "カビー"
+    url: "https://www.youtube.com/shorts/cwLPzpgxJ9M",
+    title: "うまさ比べ"
   }
 ];
 
