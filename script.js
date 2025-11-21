@@ -374,64 +374,48 @@ const videos = [
 ];
 
 
-// YouTube ID を抽出する関数
 function getYouTubeId(url) {
   const regExp = /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^\?&]+)/;
   const match = url.match(regExp);
   return match ? match[1] : null;
 }
 
-// 一覧生成
 videos.forEach((v) => {
   const item = document.createElement("div");
   item.classList.add("videoItem");
 
-  // サムネ自動生成
   const videoId = getYouTubeId(v.url);
-  if (!videoId) return; // 無効URLはスキップ
+  if (!videoId) return;
   const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-  // サムネ
   const thumb = document.createElement("img");
   thumb.src = thumbUrl;
   thumb.classList.add("thumbnail");
   thumb.addEventListener("click", () => playVideo(v.url, v.title));
 
-  // タイトルリンク
   const link = document.createElement("a");
   link.href = "#";
   link.textContent = v.title;
   link.classList.add("videoTitle");
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    playVideo(v.url, v.title);
-  });
+  link.addEventListener("click", (e) => { e.preventDefault(); playVideo(v.url, v.title); });
 
   item.appendChild(thumb);
   item.appendChild(link);
   videoList.appendChild(item);
 });
 
-// 動画再生
 function playVideo(url, title) {
   const videoId = getYouTubeId(url);
   if (!videoId) return;
-
-  const embedUrl = url.includes("shorts")
-    ? `https://www.youtube.com/embed/${videoId}`
-    : `https://www.youtube.com/embed/${videoId}`;
-
-  // iframe の src を変更するだけ
+  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
   videoPlayer.src = embedUrl;
   videoTitle.textContent = title;
-
   videoList.style.display = "none";
   videoContainer.style.display = "block";
 }
 
 backBtn2.addEventListener("click", () => {
-  // src を空にして動画を停止
-  videoPlayer.src = "";
+  videoPlayer.src = ""; // 再生停止
   videoContainer.style.display = "none";
-  videoList.style.display = "flex"; // flex で戻す
+  videoList.style.display = "flex";
 });
