@@ -355,41 +355,55 @@ document.getElementById("logoutBtn").onclick = () => {
 };
 
 //ここから動画
-
 const videoList = document.getElementById("videoList");
 const videoContainer = document.getElementById("videoContainer");
 const videoPlayer = document.getElementById("videoPlayer");
 const videoTitle = document.getElementById("videoTitle");
 const backBtn2 = document.getElementById("backBtn");
 
-// 配列はURLだけ
+// 配列には URL とタイトルを設定
 const videos = [
-  "https://www.youtube.com/watch?v=fnNwgcj3fWU",
-  "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1"
+  {
+    url: "https://www.youtube.com/watch?v=fnNwgcj3fWU",
+    title: "三つの新曲"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1",
+    title: "カビー"
+  }
 ];
 
+// YouTube ID を抽出する関数（ショートも通常動画も対応）
+function getYouTubeId(url) {
+  const regExp = /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^\?&]+)/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+}
+
 // 一覧生成
-videos.forEach((url) => {
+videos.forEach((v) => {
   const item = document.createElement("div");
   item.classList.add("videoItem");
 
-  // YouTube ID を抽出
-  const videoId = url.split("/").pop(); // shorts の場合も対応
+  // サムネ自動生成
+  const videoId = getYouTubeId(v.url);
+  if (!videoId) return; // 無効URLはスキップ
   const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
   // サムネ
   const thumb = document.createElement("img");
   thumb.src = thumbUrl;
   thumb.classList.add("thumbnail");
-  thumb.addEventListener("click", () => playVideo(url));
+  thumb.addEventListener("click", () => playVideo(v.url, v.title));
 
   // タイトルリンク
   const link = document.createElement("a");
   link.href = "#";
-  link.textContent = url; // タイトルはURLそのまま
+  link.textContent = v.title;
+  link.classList.add("videoTitle");
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    playVideo(url);
+    playVideo(v.url, v.title);
   });
 
   item.appendChild(thumb);
@@ -397,21 +411,26 @@ videos.forEach((url) => {
   videoList.appendChild(item);
 });
 
-function playVideo(url) {
-  const videoId = url.split("/").pop();
+// 動画再生
+function playVideo(url, title) {
+  const videoId = getYouTubeId(url);
+  if (!videoId) return;
+
   const embedUrl = url.includes("shorts")
     ? `https://www.youtube.com/embed/${videoId}`
-    : url.replace("watch?v=", "embed/");
+    : `https://www.youtube.com/embed/${videoId}`;
 
-  videoPlayer.src = embedUrl;
-  videoTitle.textContent = url;
+  // iframeを使う場合
+  videoPlayer.outerHTML = `<iframe id="videoPlayer" width="100%" height="480" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+
+  videoTitle.textContent = title;
 
   videoList.style.display = "none";
   videoContainer.style.display = "block";
 }
 
+// 戻るボタン
 backBtn2.addEventListener("click", () => {
-  videoPlayer.src = "";
-  videoContainer.style.display = "none";
-  videoList.style.display = "block";
-});
+  // iframe を空にして破棄
+  videoPlayer.outerHTML = `<iframe id="videoPlayer" width="100%" height="480" frameborder="0" allowfullscreen></iframe>`;
+  videoContaine
