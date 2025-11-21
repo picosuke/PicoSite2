@@ -362,7 +362,7 @@ const videoTitle = document.getElementById("videoTitle");
 const backBtn2 = document.getElementById("backBtn");
 
 // 最大 50 個までチェック（必要に応じて変更）
-const MAX_FILES = 50;
+const MAX_FILES = 1;
 
 // 自動読み込み
 (async function loadVideos() {
