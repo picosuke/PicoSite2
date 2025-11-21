@@ -357,69 +357,53 @@ document.getElementById("logoutBtn").onclick = () => {
 //ここから動画
 const videoList = document.getElementById("videoList");
 const videoContainer = document.getElementById("videoContainer");
-const videoPlayer = document.getElementById("videoPlayer");
+const videoFrame = document.getElementById("videoFrame");
 const videoTitle = document.getElementById("videoTitle");
 const backBtn2 = document.getElementById("backBtn");
 
-// 最大 50 個までチェック（必要に応じて変更）
-const MAX_FILES = 1;
-
-// 自動読み込み
-(async function loadVideos() {
-  for (let i = 1; i <= MAX_FILES; i++) {
-    const videoPath = `videos/${i}.mp4`;
-    const thumbPath = `thumbnails/s${i}.jpg`;
-
-    // 動画が存在するかチェック
-    const exists = await fileExists(videoPath);
-    if (!exists) break; // 連番が途切れたら終了
-
-    addVideoItem(i, videoPath, thumbPath);
+// 配列にYouTubeリンクを入れる
+const videos = [
+  {
+    url: "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1",
+    title: "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1"
+  },
+  {
+    url: "https://www.youtube.com/shorts/cwLPzpgxJ9M",
+    title: "https://www.youtube.com/shorts/cwLPzpgxJ9M"
   }
-})();
+];
 
-// HEADリクエストでファイルの存在チェック
-async function fileExists(url) {
-  try {
-    const res = await fetch(url, { method: "HEAD" });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
-function addVideoItem(index, videoSrc, thumbSrc) {
+// 一覧生成
+videos.forEach((v, i) => {
   const item = document.createElement("div");
   item.classList.add("videoItem");
 
-  const thumb = document.createElement("img");
-  thumb.src = thumbSrc;
-  thumb.classList.add("thumbnail");
-
   const link = document.createElement("a");
   link.href = "#";
-  link.textContent = `${index}番の動画`;
+  link.textContent = v.title;
+
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    playVideo(videoSrc, `${index}番の動画`);
+    playVideo(v.url, v.title);
   });
 
-  item.appendChild(thumb);
   item.appendChild(link);
   videoList.appendChild(item);
-}
+});
 
-function playVideo(src, title) {
-  videoPlayer.src = src;
+function playVideo(url, title) {
+  // watch?v= から embed/ に変換
+  const embedUrl = url.replace("watch?v=", "embed/");
+
+  videoFrame.src = embedUrl;
   videoTitle.textContent = title;
+
   videoList.style.display = "none";
   videoContainer.style.display = "block";
-  videoPlayer.play();
 }
 
 backBtn2.addEventListener("click", () => {
-  videoPlayer.pause();
-  videoPlayer.src = "";
+  videoFrame.src = "";
   videoContainer.style.display = "none";
   videoList.style.display = "block";
 });
