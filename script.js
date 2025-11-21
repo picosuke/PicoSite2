@@ -433,4 +433,6 @@ function playVideo(url, title) {
 backBtn2.addEventListener("click", () => {
   // iframe を空にして破棄
   videoPlayer.outerHTML = `<iframe id="videoPlayer" width="100%" height="480" frameborder="0" allowfullscreen></iframe>`;
-  videoContaine
+  videoContainer.style.display = "none";
+  videoList.style.display = "flex"; // CSSの flex に戻す
+});
