@@ -361,49 +361,30 @@ const videoFrame = document.getElementById("videoFrame");
 const videoTitle = document.getElementById("videoTitle");
 const backBtn2 = document.getElementById("backBtn");
 
-// 配列にYouTubeリンクを入れる
+// 配列（タイトルと動画リンクは同じ）
 const videos = [
-  {
-    url: "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1",
-    title: "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1"
-  },
-  {
-    url: "https://www.youtube.com/shorts/cwLPzpgxJ9M",
-    title: "https://www.youtube.com/shorts/cwLPzpgxJ9M"
-  }
+  "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1",
+  "https://www.youtube.com/shorts/cwLPzpgxJ9M"
 ];
 
 // 一覧生成
-videos.forEach((v, i) => {
+videos.forEach((url) => {
   const item = document.createElement("div");
   item.classList.add("videoItem");
 
   const link = document.createElement("a");
   link.href = "#";
-  link.textContent = v.title;
-
+  link.textContent = url;  // タイトルとしても同じ
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    playVideo(v.url, v.title);
+    playVideo(url);
   });
 
   item.appendChild(link);
   videoList.appendChild(item);
 });
 
-function playVideo(url, title) {
-  // watch?v= から embed/ に変換
+function playVideo(url) {
   const embedUrl = url.replace("watch?v=", "embed/");
-
   videoFrame.src = embedUrl;
-  videoTitle.textContent = title;
-
-  videoList.style.display = "none";
-  videoContainer.style.display = "block";
-}
-
-backBtn2.addEventListener("click", () => {
-  videoFrame.src = "";
-  videoContainer.style.display = "none";
-  videoList.style.display = "block";
-});
+  video
