@@ -355,16 +355,17 @@ document.getElementById("logoutBtn").onclick = () => {
 };
 
 //ここから動画
+
 const videoList = document.getElementById("videoList");
 const videoContainer = document.getElementById("videoContainer");
-const videoFrame = document.getElementById("videoFrame");
+const videoPlayer = document.getElementById("videoPlayer");
 const videoTitle = document.getElementById("videoTitle");
 const backBtn2 = document.getElementById("backBtn");
 
-// 配列（タイトルと動画リンクは同じ）
+// 配列はURLだけ
 const videos = [
-  "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1",
-  "https://www.youtube.com/shorts/cwLPzpgxJ9M"
+  "https://www.youtube.com/watch?v=fnNwgcj3fWU",
+  "https://www.youtube.com/watch?v=gnceX9APNIg&list=RDgnceX9APNIg&start_radio=1"
 ];
 
 // 一覧生成
@@ -372,19 +373,45 @@ videos.forEach((url) => {
   const item = document.createElement("div");
   item.classList.add("videoItem");
 
+  // YouTube ID を抽出
+  const videoId = url.split("/").pop(); // shorts の場合も対応
+  const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+  // サムネ
+  const thumb = document.createElement("img");
+  thumb.src = thumbUrl;
+  thumb.classList.add("thumbnail");
+  thumb.addEventListener("click", () => playVideo(url));
+
+  // タイトルリンク
   const link = document.createElement("a");
   link.href = "#";
-  link.textContent = url;  // タイトルとしても同じ
+  link.textContent = url; // タイトルはURLそのまま
   link.addEventListener("click", (e) => {
     e.preventDefault();
     playVideo(url);
   });
 
+  item.appendChild(thumb);
   item.appendChild(link);
   videoList.appendChild(item);
 });
 
 function playVideo(url) {
-  const embedUrl = url.replace("watch?v=", "embed/");
-  videoFrame.src = embedUrl;
-  video
+  const videoId = url.split("/").pop();
+  const embedUrl = url.includes("shorts")
+    ? `https://www.youtube.com/embed/${videoId}`
+    : url.replace("watch?v=", "embed/");
+
+  videoPlayer.src = embedUrl;
+  videoTitle.textContent = url;
+
+  videoList.style.display = "none";
+  videoContainer.style.display = "block";
+}
+
+backBtn2.addEventListener("click", () => {
+  videoPlayer.src = "";
+  videoContainer.style.display = "none";
+  videoList.style.display = "block";
+});
