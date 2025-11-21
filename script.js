@@ -417,7 +417,6 @@ function playVideo(url, title) {
   const videoId = getYouTubeId(url);
   if (!videoId) return;
 
-  // 埋め込み用URL
   const embedUrl = url.includes("shorts")
     ? `https://www.youtube.com/embed/${videoId}`
     : `https://www.youtube.com/embed/${videoId}`;
@@ -430,10 +429,9 @@ function playVideo(url, title) {
   videoContainer.style.display = "block";
 }
 
-// 戻るボタン
 backBtn2.addEventListener("click", () => {
-  // src を空にして停止
+  // src を空にして動画を停止
   videoPlayer.src = "";
   videoContainer.style.display = "none";
-  videoList.style.display = "flex";
+  videoList.style.display = "flex"; // flex で戻す
 });
