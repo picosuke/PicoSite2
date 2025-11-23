@@ -1,21 +1,21 @@
-const toggle = document.querySelector(".menu-toggle");
-const menu = document.querySelector("#hd ul");
+window.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".menu-toggle");
+  const menu = document.querySelector("#hd ul");
 
-toggle.addEventListener("click", () => {
-  menu.classList.toggle("show");
-  toggle.classList.toggle("active");
-});
+  toggle.addEventListener("click", () => {
+    menu.classList.toggle("show");
+    toggle.classList.toggle("active");
+  });
 
-const menuItems = document.querySelectorAll("#hd ul li");
-const contents = document.querySelectorAll(".content");
+  const menuItems = document.querySelectorAll("#hd ul li");
+  const contents = document.querySelectorAll(".content");
 
-menuItems.forEach(item => {
-  item.addEventListener("click", () => {
-    // すべての main を非表示
-    contents.forEach(c => c.classList.remove("active"));
-     // 対象IDを取得して表示
-    const targetId = item.dataset.target;
-    document.getElementById(targetId).classList.add("active");
+  menuItems.forEach(item => {
+    item.addEventListener("click", () => {
+      contents.forEach(c => c.classList.remove("active"));
+      const targetId = item.dataset.target;
+      document.getElementById(targetId).classList.add("active");
+    });
   });
 });
 
