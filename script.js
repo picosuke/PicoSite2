@@ -327,6 +327,8 @@ auth.onAuthStateChanged(user => {
 
     document.getElementById("main2_c").style.display = "block";
     document.getElementById("main2_t").style.display = "none";
+    document.getElementById("googleLogin").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "block";
     document.getElementById("you_name").style.display = "flex";
     let initial = (user.email?.trim()?.charAt(0) || "").toUpperCase();
     document.getElementById("you_name").textContent = initial;
@@ -337,6 +339,8 @@ auth.onAuthStateChanged(user => {
     document.getElementById("main2_c").style.display = "none";
     document.getElementById("main2_t").style.display = "block";
     document.getElementById("you_name").style.display = "none";
+    document.getElementById("googleLogin").style.display = "block";
+    document.getElementById("logoutBtn").style.display = "none";
   }
 });
 
