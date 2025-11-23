@@ -99,6 +99,9 @@ body {
 }
 
 @media (max-width: 900px) {
+  .menu-toggle {
+    display: flex;
+  }
   #hd ul {
     display: none;
     flex-direction: column;
@@ -106,6 +109,7 @@ body {
     top: 80px;
     left: 10px;
     width: calc(100% - 20px); /* ← 横幅を全体に */
+    height: 90vh;
     background: rgba(255,255,255,0.97);
     border: 1px solid var(--border);
     border-radius: 16px;
