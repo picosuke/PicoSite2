@@ -5,6 +5,7 @@ toggle.addEventListener("click", () => {
   menu.classList.toggle("show");
   toggle.classList.toggle("active");
 });
+
 const menuItems = document.querySelectorAll("#hd ul li");
 const contents = document.querySelectorAll(".content");
 
