@@ -76,49 +76,33 @@ body {
 }
 
 /* ハンバーガー */
+/* ハンバーガーメニュー */
 .menu-toggle {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: relative;
   width: 28px;
-  height: 28px; /* 正方形に変更 */
+  height: 20px;
   cursor: pointer;
+  position: absolute;
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  transition: 0.5s;
   z-index: 1000;
 }
 
-
 .menu-toggle span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 28px;
+  display: block;
   height: 3px;
-  background: #333;
+  width: 100%;
+  background-color: #333;
   border-radius: 2px;
-  transform: translate(-50%, -50%);
   transition: all 0.3s ease;
 }
 
-.menu-toggle span:nth-child(1) {
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.menu-toggle span:nth-child(2) {
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.menu-toggle span:nth-child(3) {
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-/* バツ印 */
+/* アクティブ時のアニメーション */
 .menu-toggle.active span:nth-child(1) {
-  transform: translate(-50%, -50%) rotate(45deg);
+  transform: rotate(45deg) translate(5px, 5px);
 }
 
 .menu-toggle.active span:nth-child(2) {
@@ -126,7 +110,7 @@ body {
 }
 
 .menu-toggle.active span:nth-child(3) {
-  transform: translate(-50%, -50%) rotate(-45deg);
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
 @media (max-width: 900px) {
