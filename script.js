@@ -314,9 +314,11 @@ document.getElementById("googleLogin").onclick = () => {
   auth.signInWithPopup(googleProvider)
     .then(result => {
       console.log("Googleログイン成功:", result.user);
+      window.location.reload();
     })
     .catch(error => {
       console.error("Googleログインエラー:", error);
+      window.location.reload();
     });
 };
 
