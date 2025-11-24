@@ -80,7 +80,7 @@ body {
 .menu-toggle {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; /* 3本を均等に並べる */
   width: 28px;
   height: 20px;
   cursor: pointer;
