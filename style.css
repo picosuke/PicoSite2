@@ -74,21 +74,13 @@ body {
   background: rgba(0,0,0,0.05);
   color: var(--accent);
 }
-
-/* ハンバーガー */
-/* ハンバーガーメニュー */
 .menu-toggle {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 3本を均等に並べる */
+  justify-content: space-between; /* 三本線を均等に */
   width: 28px;
   height: 20px;
   cursor: pointer;
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1000;
 }
 
 .menu-toggle span {
@@ -100,13 +92,13 @@ body {
   transition: all 0.3s ease;
 }
 
-/* アクティブ時のアニメーション */
+/* クリックでアクティブ（×）に変化 */
 .menu-toggle.active span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
 
 .menu-toggle.active span:nth-child(2) {
-  opacity: 0;
+  opacity: 0; /* 真ん中の線は消す */
 }
 
 .menu-toggle.active span:nth-child(3) {
