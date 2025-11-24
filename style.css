@@ -81,12 +81,13 @@ body {
   flex-direction: column;
   justify-content: space-between;
   width: 28px;
-  height: 20px;
+  height: 28px;
   cursor: pointer;
   position: absolute;
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
+  transition: 0.5s;
   z-index: 1000;
 }
 
