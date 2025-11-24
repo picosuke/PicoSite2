@@ -80,10 +80,10 @@ body {
   display: none;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
   width: 28px;
-  height: 28px;
+  height: 28px; /* 正方形に変更 */
   cursor: pointer;
-  position: absolute;
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
