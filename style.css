@@ -98,6 +98,19 @@ body {
   transition: all 0.3s ease;
 }
 
+/* バツ印アニメーション用 */
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0; /* 真ん中の線は消す */
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
 @media (max-width: 900px) {
   .menu-toggle {
     display: flex;
