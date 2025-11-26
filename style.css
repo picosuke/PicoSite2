@@ -76,7 +76,7 @@ body {
   color: var(--accent);
 }
 .menu-toggle {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between; /* 三本線を均等に */
   width: 28px;
