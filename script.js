@@ -89,6 +89,24 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 
 
 
+
+// これを messagesRef を定義した直後に書く
+window.messagesRef = messagesRef;
+
+// コンソール操作用
+window.clearMessages = () => {
+  if(confirm("本当に全部消す？")) {
+    messagesRef.set(null);
+    console.log("🔥 全メッセージ削除しました");
+  }
+};
+
+
+
+
+
+
+
 //学習
 
 let questionSets = [];
