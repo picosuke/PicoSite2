@@ -426,12 +426,3 @@ backBtn2.addEventListener("click", () => {
   videoContainer.style.display = "none";
   videoList.style.display = "flex";
 });
-
-
-
-
-
-
-
-const messagesRef = ref(db, "messages");
-window.messagesRef = messagesRef;
