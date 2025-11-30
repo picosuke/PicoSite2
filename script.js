@@ -89,21 +89,15 @@ document.getElementById("getStartedBtn")?.addEventListener("click", () => {
 
 
 
+window.clearMessages = async () => {
+  if (!confirm("🔥 本当にDBから全メッセージ消す？戻せないよ")) return;
 
-// これを messagesRef を定義した直後に書く
-window.messagesRef = messagesRef;
+  const url = "https://my-chat-app-37b9e-default-rtdb.firebaseio.com/messages.json";
 
-// コンソール操作用
-window.clearMessages = () => {
-  if(confirm("本当に全部消す？")) {
-    messagesRef.set(null);
-    console.log("🔥 全メッセージ削除しました");
-  }
+  await fetch(url, { method: "DELETE" });
+  console.log("✨ 完全削除完了");
+  chat.innerHTML = "";
 };
-
-
-
-
 
 
 
