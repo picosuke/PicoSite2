@@ -673,7 +673,7 @@ main.content.active {
 }
 
 #main3 .preview {
-  width: 420px;
+  width: 100%;
   padding: 12px;
   background: #fff;
   border-radius: 10px;
