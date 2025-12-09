@@ -17,7 +17,7 @@
   <ul>
     <li data-target="main1">ホーム</li>
     <li data-target="main2">チャット</li>
-    <li data-target="main3">サイト</li>
+    <li data-target="main3">素材場</li>
     <li data-target="main5">学習</li>
     <li data-target="main4">PicoTube</li>
   </ul>
@@ -80,6 +80,103 @@
 </main>
   
 <main id="main3" class="content">
+
+<div class="generator-container">
+  <h1>素材場</h1>
+
+  <div class="controls card">
+    <div style="min-width:220px">
+      <label>プリセット</label>
+      <select id="preset">
+        <option value="clean">きれいめ（ベーシック）</option>
+        <option value="hand">手描き風（ラフ）</option>
+        <option value="cute">かわいい（ふっくら）</option>
+        <option value="shadow">影あり（図形に影）</option>
+      </select>
+    </div>
+
+    <div>
+      <label>枠線の色 (stroke)</label>
+      <input id="strokeColor" type="color" value="#7a5a48">
+    </div>
+
+    <div>
+      <label>塗りつぶしの色 (fill)</label>
+      <input id="fillColor" type="color" value="#ffffff">
+    </div>
+
+    <div style="min-width:120px">
+      <label>線の太さ（px）</label>
+      <input id="strokeWidth" type="number" value="3" min="0" max="20" step="1">
+    </div>
+    <div style="width:200px">
+      <label>図形の引数 (-100~100)</label>
+      <input id="ratio" type="range" min="-100" max="100" value="0">
+      <small id="ratioValue">引数：0</small>
+    </div>
+    <div style="width:200px">
+      <label>図形の引数2 (0~200)</label>
+      <input id="ratio2" type="range" min="0" max="200" value="100">
+      <small id="ratioValue2">引数：100</small>
+    </div>
+
+    <div>
+      <label>エクスポート幅(px)</label>
+      <input id="exportW" type="number" value="1200" min="200" step="100">
+    </div>
+
+    <div style="align-self:end">
+      <div class="row">
+        <button id="apply">再度反映</button>
+      </div>
+    </div>
+  </div>
+
+  <ul class="tabList">
+    <li class="tab active" data-tab-id="1">図形</li>
+    <li class="tab" data-tab-id="2">背景</li>
+    <li class="tab" data-tab-id="3">その他</li>
+  </ul>
+
+  <div class="tabContentList">
+    <article class="tabContent active" id="content_1">
+      <div class="preview-area">
+        <div class="preview-area2">
+          <div class="preview card">
+            <strong style="margin-bottom:8px; display:block;">テキストの枠①</strong>
+            <div id="ribbonWrap"></div>
+            <small>※ テキストは後から乗せる想定</small>
+            <br><br>
+            <button id="downloadRibbon" class="secondary">PNGで保存</button>
+          </div>
+
+          <div class="preview card">
+            <strong style="margin-bottom:8px; display:block;">テキストの枠②</strong>
+            <div id="box2Wrap"></div>
+            <small>※ テキストは後から乗せる想定</small>
+            <br><br>
+            <button id="downloadBox2" class="secondary">PNGで保存</button>
+          </div>
+        </div>
+
+        <div class="preview-area2">
+          <div class="preview card">
+            <strong style="margin-bottom:8px; display:block;">角丸正方形</strong>
+            <div id="boxWrap"></div>
+            <small>※ 大きめ角丸</small>
+            <br><br>
+            <button id="downloadBox" class="secondary">PNGで保存</button>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="tabContent" id="content_2">
+    </article>
+    <article class="tabContent" id="content_3">
+    </article>
+  </div>
+</div>
+  
 </main>
   
 <main id="main4" class="content">
