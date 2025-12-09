@@ -605,24 +605,24 @@ main.content.active {
 }
 
 
-.main3 :root {
+#main3 :root {
   --gap: 14px;
   --accent: #ff7ca8;
 }
 
-.main3 .generator-container {
+#main3 .generator-container {
   font-family: system-ui, "Noto Sans JP", sans-serif;
   padding: 20px;
   background: #fff;
   color: #111;
 }
 
-.main3 h1 {
+#main3 h1 {
   margin: 0 0 10px;
   font-size: 18px;
 }
 
-.main3 .controls {
+#main3 .controls {
   display: flex;
   gap: var(--gap);
   flex-wrap: wrap;
@@ -632,7 +632,7 @@ main.content.active {
   bottom: 0;
 }
 
-.main3 .card {
+#main3 .card {
   border: 1px solid #eee;
   padding: 12px;
   border-radius: 10px;
@@ -640,48 +640,48 @@ main.content.active {
   background: #fafafa;
 }
 
-.main3 label {
+#main3 label {
   display: block;
   font-size: 13px;
   margin-bottom: 6px;
 }
 
-.main3 input[type="color"],
-.main3 input[type="number"],
-.main3 select {
+#main3 input[type="color"],
+#main3 input[type="number"],
+#main3 select {
   height: 34px;
 }
 
-.main3 .preview-area {
+#main3 .preview-area {
   display: flex;
   width: 100%;
 }
 
-.main3 .preview-area2 {
+#main3 .preview-area2 {
   display: grid;
   gap: 18px;
   width: 50%;
 }
 
-.main3 .preview {
+#main3 .preview {
   width: 420px;
   padding: 12px;
   background: #fff;
   border-radius: 10px;
 }
 
-.main3 svg {
+#main3 svg {
   max-width: 100%;
   height: auto;
 }
 
-.main3 .row {
+#main3 .row {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.main3 button {
+#main3 button {
   background: var(--accent);
   color: #fff;
   border: none;
@@ -690,21 +690,21 @@ main.content.active {
   cursor: pointer;
 }
 
-.main3 button.secondary {
+#main3 button.secondary {
   background: #444;
 }
 
-.main3 small {
+#main3 small {
   color: #666;
 }
 
-.main3 .tabList {
+#main3 .tabList {
   display: flex;
   width: 100%;
   margin: 0;
 }
 
-.main3 .tabList .tab {
+#main3 .tabList .tab {
   display: block;
   width: 15%;
   font-size: 14px;
@@ -722,27 +722,27 @@ main.content.active {
   margin-right: 10px;
 }
 
-.main3 .tabList .tab:hover {
+#main3 .tabList .tab:hover {
   cursor: pointer;
   opacity: 0.8;
 }
 
-.main3 .tabList .tab.active {
+#main3 .tabList .tab.active {
   line-height: 1.8;
   background-color: #888;
   font-weight: bold;
 }
 
-.main3 .tabList .tab.active:hover {
+#main3 .tabList .tab.active:hover {
   cursor: auto;
   opacity: 1;
 }
 
-.main3 .tabContentList {
+#main3 .tabContentList {
   display: block;
 }
 
-.main3 .tabContentList .tabContent {
+#main3 .tabContentList .tabContent {
   display: none;
   font-size: 14px;
   line-height: 1.4;
@@ -753,6 +753,6 @@ main.content.active {
   border-radius: 30px;
 }
 
-.main3 .tabContentList .tabContent.active {
+#main3 .tabContentList .tabContent.active {
   display: block;
 }
