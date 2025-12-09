@@ -615,6 +615,8 @@ main.content.active {
   padding: 20px;
   background: #fff;
   color: #111;
+  /* 🌟 修正1: 固定フッター（controls）の高さ分、下部にパディングを追加 */
+  padding-bottom: 150px; 
 }
 
 #main3 h1 {
@@ -630,6 +632,13 @@ main.content.active {
   align-items: center;
   position: fixed;
   bottom: 0;
+
+  /* 🌟 修正2: 固定要素の幅と位置をビューポート全体に合わせる */
+  left: 0;
+  right: 0;
+  width: 100%;
+  /* 🌟 修正3: コントロールパネルが他の要素より手前に表示されるようにする */
+  z-index: 100; 
 }
 
 #main3 .card {
