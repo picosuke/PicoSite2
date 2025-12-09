@@ -438,3 +438,285 @@ backBtn2.addEventListener("click", () => {
   videoContainer.style.display = "none";
   videoList.style.display = "flex";
 });
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const main3Container = document.querySelector('.generator-container') || document.body; 
+
+    /* -------------------------
+          タブ切り替え処理
+    -------------------------- */
+    const tabs = main3Container.querySelectorAll(".tab");
+    const contents = main3Container.querySelectorAll(".tabContentList .tabContent");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        if (!tab.classList.contains("active")) {
+          const tabId = tab.getAttribute("data-tab-id");
+          tabs.forEach(t => t.classList.remove("active"));
+          contents.forEach(c => c.classList.remove("active"));
+          tab.classList.add("active");
+          main3Container.querySelector(`#content_${tabId}`).classList.add("active");
+        }
+      });
+    });
+
+    /* -------------------------
+          SVG生成関数
+    -------------------------- */
+
+    function makeRibbonSVG(opts) {
+      const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
+      const baseW = 880;
+      const baseH = 140;
+      let w = baseW;
+      if (ratio > 0) w = baseW + (ratio * 6);
+      if (ratio < 0) w = baseW - (Math.abs(ratio) * 6);
+      w = Math.max(400, w);
+
+      const handFilter = (variant === 'hand') ? `
+        <filter id="rough">
+          <feTurbulence baseFrequency="0.8" numOctaves="2" seed="3" stitchTiles="stitch" />
+          <feDisplacementMap in="SourceGraphic" scale="4" />
+        </filter>` : '';
+
+      const shadow = (variant === 'shadow') ? `
+        <filter id="drops">
+          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.12"/>
+        </filter>` : '';
+
+      const boxW = w * 0.68;
+      const boxX = (w - boxW) / 2;
+      const rx = (variant === 'cute') ? 26 : 18;
+      const h = (variant === 'cute') ? 110 : 70;
+      const centerY = (baseH - h) / 2;
+
+      return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="${baseH}" 
+          viewBox="0 0 ${w} ${baseH}">
+      <defs>
+        ${handFilter}
+        ${shadow}
+        <style>
+          .outline { fill:${fill}; stroke:${stroke}; stroke-width:${strokeWidth}; stroke-linecap:round; stroke-linejoin:round; }
+          .ribbon-tail { fill:${fill}; stroke:${stroke}; stroke-width:${strokeWidth}; stroke-linecap:round; stroke-linejoin:round; }
+        </style>
+      </defs>
+
+      <g ${variant === 'shadow' ? 'filter="url(#drops)"' : ''}>
+        <rect x="${boxX}" y="${centerY}" width="${boxW}" height="${h}" rx="${rx}"
+          class="outline" ${variant==='hand'?'filter="url(#rough)"':''} />
+
+        <path d="M${boxX} ${centerY} L${boxX - 50} ${centerY + h/2} L${boxX} ${centerY + h} Z" 
+          class="ribbon-tail" ${variant==='hand'?'filter="url(#rough)"':''}/>
+
+        <path d="M${boxX + boxW} ${centerY} L${boxX + boxW + 50} ${centerY + h/2} L${boxX + boxW} ${centerY + h} Z" 
+          class="ribbon-tail" ${variant==='hand'?'filter="url(#rough)"':''}/>
+      </g>
+    </svg>`;
+    }
+
+
+    function makeBoxSVG(opts){
+      const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
+      const base = 420;
+      let w = base;
+      let h = base;
+
+      if (ratio > 0) {
+        w = base - (ratio * 6);
+      } else if (ratio < 0) {
+        h = base - (Math.abs(ratio) * 6);
+      }
+
+      var rx = ratio2 * 0.9 ;
+      rx = (variant === 'cute') ? rx+15 : rx;
+      w = Math.max(135, w);
+      h = Math.max(135, h);
+
+
+      const rough = (variant === 'hand') ? `
+        <filter id="roughBox">
+          <feTurbulence baseFrequency="0.7" numOctaves="1" seed="7"/>
+          <feDisplacementMap in="SourceGraphic" scale="5"/>
+        </filter>` : '';
+
+      const shadow = (variant === 'shadow') ? `
+        <filter id="dropsBox">
+          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.2"/>
+        </filter>` : '';
+
+      return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" 
+          viewBox="0 0 ${base} ${base}">
+      <defs>
+        ${rough}
+        ${shadow}
+      </defs>
+
+      <rect x="${(base-w/1.3)/2}" y="${(base-h/1.3)/2}" width="${w/1.3}" height="${h/1.3}" rx="${rx}"
+        fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"
+        ${variant === 'hand' ? 'filter="url(#roughBox)"' : ''}
+        ${variant === 'shadow' ? 'filter="url(#dropsBox)"' : ''}/>
+    </svg>`;
+    }
+
+    function makeBox2SVG(opts){
+      const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
+      const baseW = 800;
+      const baseH = 220;
+      const rectH = 160;
+      let w = baseW;
+      if (ratio > 0) w = baseW + (ratio * 6);
+      if (ratio < 0) w = baseW - (Math.abs(ratio) * 6);
+      w = Math.max(0, w);
+
+      const h = baseH;
+      var rx = rectH / 2 - 100 + ratio2 /2 ;
+
+      const handFilter = (variant === 'hand') ? `
+        <filter id="rough2">
+          <feTurbulence baseFrequency="0.85" numOctaves="2" seed="6"/>
+          <feDisplacementMap in="SourceGraphic" scale="5"/>
+        </filter>` : '';
+
+      const shadow = (variant === 'shadow') ? `
+        <filter id="drops2">
+          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.18"/>
+        </filter>` : '';
+
+      return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="220"
+          viewBox="0 0 ${w} ${h}">
+      <defs>
+        ${handFilter}
+        ${shadow}
+      </defs>
+
+      <rect x="${(w - (w*0.82)) / 2}" 
+            y="30" 
+            width="${w * 0.82}" 
+            height="160" 
+            rx="${rx}"
+            fill="${fill}" 
+            stroke="${stroke}" 
+            stroke-width="${strokeWidth}"
+            ${variant === 'hand' ? 'filter="url(#rough2)"' : ''}
+            ${variant === 'shadow' ? 'filter="url(#drops2)"' : ''}/>
+    </svg>`;
+    }
+
+    /* -------------------------
+          DOM / 設定反映
+    -------------------------- */
+
+    const ribbonWrap   = main3Container.querySelector('#ribbonWrap');
+    const boxWrap      = main3Container.querySelector('#boxWrap');
+    const box2Wrap     = main3Container.querySelector('#box2Wrap');
+    const preset       = main3Container.querySelector('#preset');
+    const strokeColor  = main3Container.querySelector('#strokeColor');
+    const fillColor    = main3Container.querySelector('#fillColor');
+    const strokeWidth  = main3Container.querySelector('#strokeWidth');
+    const exportW      = main3Container.querySelector('#exportW');
+    const ratioSlider  = main3Container.querySelector('#ratio');
+    const ratioText    = main3Container.querySelector('#ratioValue');
+    const ratioSlider2  = main3Container.querySelector('#ratio2');
+    const ratioText2    = main3Container.querySelector('#ratioValue2');
+    const applyBtn     = main3Container.querySelector('#apply');
+
+    function readOpts() {
+      return {
+        stroke: strokeColor.value,
+        fill: fillColor.value,
+        strokeWidth: Number(strokeWidth.value),
+        variant: preset.value,
+        ratio: Number(ratioSlider.value),
+        ratio2: Number(ratioSlider2.value)
+      };
+    }
+
+    function renderAll(){
+      const opts = readOpts();
+      ribbonWrap.innerHTML = makeRibbonSVG(opts);
+      boxWrap.innerHTML = makeBoxSVG(opts);
+      box2Wrap.innerHTML = makeBox2SVG(opts);
+    }
+
+
+    /* -------------------------
+      PNG保存処理（背景透明）
+    -------------------------- */
+
+    function svgToImage(svgString, width, callback){
+      const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+
+      img.onload = function(){
+        const canvas = document.createElement('canvas');
+        const aspect = img.width / img.height;
+
+        canvas.width = Number(width);
+        canvas.height = Math.round(Number(width) / aspect);
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        URL.revokeObjectURL(url);
+        callback(canvas);
+      };
+
+      img.src = url;
+    }
+
+    function downloadCanvas(canvas, filename){
+      canvas.toBlob(blob => {
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+
+        a.href = url;
+        a.download = filename;
+        a.click();
+
+        setTimeout(()=>URL.revokeObjectURL(url), 1000);
+      }, "image/png");
+    }
+
+
+    /* -------------------------
+          EVENT
+    -------------------------- */
+
+    main3Container.querySelector('#downloadRibbon').addEventListener('click', ()=>{
+      svgToImage(makeRibbonSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "ribbon.png"));
+    });
+
+    main3Container.querySelector('#downloadBox').addEventListener('click', ()=>{
+      svgToImage(makeBoxSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "box.png"));
+    });
+
+    main3Container.querySelector('#downloadBox2').addEventListener('click', ()=>{
+      svgToImage(makeBox2SVG(readOpts()), exportW.value, 
+        canvas => downloadCanvas(canvas, "waku.png"));
+    });
+
+    // 即時反映
+    [strokeColor, fillColor, strokeWidth, preset, ratioSlider, ratioSlider2].forEach(el =>
+      el.addEventListener("input", renderAll)
+    );
+
+    // ratio表示
+    ratioSlider.addEventListener("input", () => {
+      ratioText.textContent = `引数：${ratioSlider.value}`;
+    });
+
+    // ratio2表示
+    ratioSlider2.addEventListener("input", () => {
+      ratioText2.textContent = `引数：${ratioSlider2.value}`;
+    });
+
+    applyBtn.addEventListener("click", renderAll);
+
+    /* 初期描画 */
+    renderAll();
+});
