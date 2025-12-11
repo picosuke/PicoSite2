@@ -173,6 +173,24 @@
     <article class="tabContent" id="content_2">
     </article>
     <article class="tabContent" id="content_3">
+    <div class="card" style="margin:20px; text-align:left; background: #fff;">
+        <label style="font-weight: bold; font-size: 14px;">パターン塗りつぶし</label>
+        <div class="row" style="margin-bottom: 10px;">
+            <input id="dotPatternCheck" type="checkbox" style="width:20px; height:20px; margin-right:8px;">
+            <label for="dotPatternCheck" style="margin-bottom:0;">**水玉模様を適用**</label>
+        </div>
+        <small style="display:block;">
+            ※ 塗りつぶしの色 (fill) は無視され、水玉の色は**枠線の色 (stroke)**になります。
+        </small>
+        <small style="display:block;">
+            * **引数1 (ratio: -100~100):** <br>
+            　　**0以上:** グリッド配置 (並べる) <br>
+            　　**0未満:** スタッガード配置 (ずらす)
+        </small>
+        <small style="display:block;">
+            * **引数2 (ratio2: 0~200):** 水玉のサイズと間隔を調整
+        </small>
+    </div>
     </article>
   </div>
 </div>
