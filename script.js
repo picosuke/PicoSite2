@@ -665,7 +665,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       ribbonWrap.innerHTML = makeRibbonSVG(opts);
       boxWrap.innerHTML = makeBoxSVG(opts);
       box2Wrap.innerHTML = makeBox2SVG(opts);
-      svgWrap.innerHTML = makeBox2SVG(opts);
+      svgWrap.innerHTML = makeSVG(opts);
     }
 
 
@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     main3Container.querySelector('#downloadsvg').addEventListener('click', ()=>{
-      svgToImage(makeSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "box.png"));
+      svgToImage(makeSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "svg.png"));
     });
 
     main3Container.querySelector('#downloadBox2').addEventListener('click', ()=>{
