@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function makeSVG(opts){
       const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
-      const base = 420;
+      const base = ratio2*4.5;
       const rough = (variant === 'hand') ? `
         <filter id="roughBox">
           <feTurbulence baseFrequency="0.7" numOctaves="1" seed="7"/>
