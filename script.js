@@ -575,14 +575,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         </filter>` : '';
 
       return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${base}" height="${base}" 
-          viewBox="0 0 ${base} ${base}">
-      <defs>
-        ${rough}
-        ${shadow}
-      </defs>
       ${document.getElementById('svg_code').value}
-    </svg>`;
+      `
     }
   
     function makeBox2SVG(opts){
