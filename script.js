@@ -516,7 +516,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     </svg>`;
     }
 
-
     function makeBoxSVG(opts){
       const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
       const base = 420;
@@ -561,6 +560,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
     </svg>`;
     }
 
+    function makeSVG(opts){
+      const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
+      const base = 420;
+      const rough = (variant === 'hand') ? `
+        <filter id="roughBox">
+          <feTurbulence baseFrequency="0.7" numOctaves="1" seed="7"/>
+          <feDisplacementMap in="SourceGraphic" scale="5"/>
+        </filter>` : '';
+
+      const shadow = (variant === 'shadow') ? `
+        <filter id="dropsBox">
+          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.2"/>
+        </filter>` : '';
+
+      return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" 
+          viewBox="0 0 ${base} ${base}">
+      <defs>
+        ${rough}
+        ${shadow}
+      </defs>
+      ${document.getElementById('svg_code').value}
+    </svg>`;
+    }
+  
     function makeBox2SVG(opts){
       const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
       const baseW = 800;
@@ -612,6 +636,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const ribbonWrap   = main3Container.querySelector('#ribbonWrap');
     const boxWrap      = main3Container.querySelector('#boxWrap');
+    const svgWrap      = main3Container.querySelector('#svgWrap');
     const box2Wrap     = main3Container.querySelector('#box2Wrap');
     const preset       = main3Container.querySelector('#preset');
     const strokeColor  = main3Container.querySelector('#strokeColor');
@@ -640,6 +665,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       ribbonWrap.innerHTML = makeRibbonSVG(opts);
       boxWrap.innerHTML = makeBoxSVG(opts);
       box2Wrap.innerHTML = makeBox2SVG(opts);
+      svgWrap.innerHTML = makeBox2SVG(opts);
     }
 
 
@@ -693,6 +719,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     main3Container.querySelector('#downloadBox').addEventListener('click', ()=>{
       svgToImage(makeBoxSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "box.png"));
+    });
+
+    main3Container.querySelector('#downloadsvg').addEventListener('click', ()=>{
+      svgToImage(makeSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "box.png"));
     });
 
     main3Container.querySelector('#downloadBox2').addEventListener('click', ()=>{
