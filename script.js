@@ -559,24 +559,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
         ${variant === 'shadow' ? 'filter="url(#dropsBox)"' : ''}/>
     </svg>`;
     }
-
     function makeSVG(opts){
       const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
-      const base = ratio2*4.5;
+      const base = ratio2 * 4.5;
+
       const rough = (variant === 'hand') ? `
         <filter id="roughBox">
           <feTurbulence baseFrequency="0.7" numOctaves="1" seed="7"/>
           <feDisplacementMap in="SourceGraphic" scale="5"/>
         </filter>` : '';
-
+  
       const shadow = (variant === 'shadow') ? `
         <filter id="dropsBox">
-          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.2"/>
+          <feDropShadow dx="0" dy="6" stdDeviation="8"
+            flood-color="#000" flood-opacity="0.2"/>
         </filter>` : '';
 
-      return `
-      ${document.getElementById('svg_code').value}
-      `
+      const code = document.getElementById('svg_code').value;
+
+      return new Function(
+        'stroke','fill','strokeWidth','variant','ratio','ratio2','base','rough','shadow',
+        `return \`${code}\`;`
+      )(stroke, fill, strokeWidth, variant, ratio, ratio2, base, rough, shadow);
     }
   
     function makeBox2SVG(opts){
