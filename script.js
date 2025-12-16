@@ -43,6 +43,10 @@ const sendBtn = document.getElementById("send");
 const nameInput = document.getElementById("name");
 const stampBtns = document.querySelectorAll(".stamp-btn");
 
+function renderMessage(text) {
+  return text.replace(/\$(.*?)\$/g, (_, html) => html);
+}
+
 // リアルタイム受信
 onValue(messagesRef, (snapshot) => {
   chat.innerHTML = "";
@@ -52,8 +56,7 @@ onValue(messagesRef, (snapshot) => {
       const div = document.createElement("div");
       div.className = "message";
       if(msg.stamp){
-        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> <br>
-                         <img src="${msg.stamp}" style="width:50px;">`;
+        div.innerHTML = `<strong>${msg.user || '名無し'}:</strong> ${renderMessage(msg.text)}`;
       } else {
         div.textContent = `${msg.user || '名無し'}: ${msg.text}`;
       }
