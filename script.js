@@ -44,10 +44,11 @@ const nameInput = document.getElementById("name");
 const stampBtns = document.querySelectorAll(".stamp-btn");
 
 function renderMessage(text) {
-  return text.replace(/\$(.*?)\$/gs, (_, html) => {
-    return escapeScriptTag(html);
-  });
+  return text
+    .replace(/\$(.*?)\$/gs, (_, html) => escapeScriptTag(html))
+    .replace(/\n/g, "<br>");
 }
+
 
 function escapeScriptTag(html) {
   return html.replace(
