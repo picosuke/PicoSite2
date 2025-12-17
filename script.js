@@ -706,7 +706,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         ${shadow}
       </defs>
 
-      <rect x="0" y="0" width="${bese}" height="${bese}" fill="${fill}" fill-opacity="${document.getElementById("toumeido")/100}"
+      <rect x="0" y="0" width="${base}" height="${base}" fill="${fill}" fill-opacity="${document.getElementById("toumeido")/100}"
       ${variant === 'hand' ? 'filter="url(#roughBox)"' : ''} ${variant === 'shadow' ? 'filter="url(#dropsBox)"' : ''}/>
     </svg>`;
     }
