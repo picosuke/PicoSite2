@@ -699,7 +699,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         </filter>` : '';
 
       return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" 
+    <svg xmlns="http://www.w3.org/2000/svg" width="${base}" height="${base}" 
           viewBox="0 0 ${base} ${base}">
       <defs>
         ${rough}
