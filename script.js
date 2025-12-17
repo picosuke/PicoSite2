@@ -668,6 +668,48 @@ document.addEventListener('DOMContentLoaded', (event) => {
             ${variant === 'shadow' ? 'filter="url(#drops2)"' : ''}/>
     </svg>`;
     }
+  
+    function maketoumeiBoxSVG(opts){
+      const { stroke, fill, strokeWidth, variant, ratio, ratio2 } = opts;
+      const base = 420;
+      let w = base;
+      let h = base;
+
+      if (ratio > 0) {
+        w = base - (ratio * 6);
+      } else if (ratio < 0) {
+        h = base - (Math.abs(ratio) * 6);
+      }
+
+      var rx = ratio2 * 0.9 ;
+      rx = (variant === 'cute') ? rx+15 : rx;
+      w = Math.max(135, w);
+      h = Math.max(135, h);
+
+
+      const rough = (variant === 'hand') ? `
+        <filter id="roughBox">
+          <feTurbulence baseFrequency="0.7" numOctaves="1" seed="7"/>
+          <feDisplacementMap in="SourceGraphic" scale="5"/>
+        </filter>` : '';
+
+      const shadow = (variant === 'shadow') ? `
+        <filter id="dropsBox">
+          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.2"/>
+        </filter>` : '';
+
+      return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" 
+          viewBox="0 0 ${base} ${base}">
+      <defs>
+        ${rough}
+        ${shadow}
+      </defs>
+
+      <rect x="0" y="0" width="${bese}" height="${bese}" fill="${fill}" fill-opacity="${document.getElementById("toumeido")/100}"
+      ${variant === 'hand' ? 'filter="url(#roughBox)"' : ''} ${variant === 'shadow' ? 'filter="url(#dropsBox)"' : ''}/>
+    </svg>`;
+    }
 
     /* -------------------------
           DOM / 設定反映
@@ -705,6 +747,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       boxWrap.innerHTML = makeBoxSVG(opts);
       box2Wrap.innerHTML = makeBox2SVG(opts);
       svgWrap.innerHTML = makeSVG(opts);
+      toumeiWrap.innerHTML = maketoumeiBoxSVG(opts);
     }
 
 
@@ -762,6 +805,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     main3Container.querySelector('#downloadsvg').addEventListener('click', ()=>{
       svgToImage(makeSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "svg.png"));
+    });
+  
+    main3Container.querySelector('#downloadtoumei').addEventListener('click', ()=>{
+      svgToImage(maketoumeiBoxSVG(readOpts()), exportW.value, canvas => downloadCanvas(canvas, "toumei.png"));
     });
 
     main3Container.querySelector('#downloadBox2').addEventListener('click', ()=>{
