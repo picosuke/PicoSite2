@@ -44,11 +44,31 @@ const nameInput = document.getElementById("name");
 const stampBtns = document.querySelectorAll(".stamp-btn");
 
 function renderMessage(text) {
-  return text
-    .replace(/\$(.*?)\$/gs, (_, html) => escapeScriptTag(html))
-    .replace(/\n/g, "<br>");
+    // 1. まず、メッセージ全体から $...$ の部分を一時的に保護する
+    const protectedText = text.replace(
+        /\$(.*?)\$/gs,
+        (match) => encodeURIComponent(match) // $...$ の中身をエンコードして一時的に隠す
+    );
+    // 2. 保護されていない部分（元の $...$ の外側）にあるHTMLタグをエスケープする
+    const escapedText = protectedText
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    // 3. 一時的に隠していた $...$ の部分を元に戻す
+    const finalHtml = escapedText
+        .replace(
+            /%24(.*?)%24/gs, // エンコードされた $...$ を探す
+            (match, encodedHtml) => {
+                // デコードして元のHTML（未エスケープ）に戻す
+                const rawHtml = decodeURIComponent(match);
+                
+                // 元のロジックに従って、<script>タグだけをエスケープして返す
+                return rawHtml.replace(/\$(.*?)\$/gs, (_, html) => escapeScriptTag(html));
+            }
+        )
+        .replace(/\n/g, "<br>"); // 改行は最後に <br> に変換
+    return finalHtml;
 }
-
 
 function escapeScriptTag(html) {
   return html.replace(
