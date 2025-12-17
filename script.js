@@ -685,29 +685,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
       rx = (variant === 'cute') ? rx+15 : rx;
       w = Math.max(135, w);
       h = Math.max(135, h);
-
-
-      const rough = (variant === 'hand') ? `
-        <filter id="roughBox">
-          <feTurbulence baseFrequency="0.7" numOctaves="1" seed="7"/>
-          <feDisplacementMap in="SourceGraphic" scale="5"/>
-        </filter>` : '';
-
-      const shadow = (variant === 'shadow') ? `
-        <filter id="dropsBox">
-          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.2"/>
-        </filter>` : '';
-
+      
+      const toumeido = document.getElementById("toumeido") ? document.getElementById("toumeido").value : 50;
+      const opacity = toumeido / 100;  // toumeidoは0〜100の範囲と仮定
+      
       return `
     <svg xmlns="http://www.w3.org/2000/svg" width="${base}" height="${base}" 
           viewBox="0 0 ${base} ${base}">
-      <defs>
-        ${rough}
-        ${shadow}
-      </defs>
-
-      <rect x="0" y="0" width="${base}" height="${base}" fill="${fill}" fill-opacity="${document.getElementById("toumeido").value/100}"
-      ${variant === 'hand' ? 'filter="url(#roughBox)"' : ''} ${variant === 'shadow' ? 'filter="url(#dropsBox)"' : ''}/>
+      <rect x="0" y="0" width="${base}" height="${base}" fill="${fill}" fill-opacity="${opacity}"/>
     </svg>`;
     }
 
