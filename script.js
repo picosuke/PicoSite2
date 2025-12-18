@@ -1,3 +1,5 @@
+
+
 window.addEventListener("DOMContentLoaded", () => {
   const toggle = document.querySelector(".menu-toggle");
   const menu = document.querySelector("#hd ul");
@@ -692,7 +694,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       return `
     <svg xmlns="http://www.w3.org/2000/svg" width="${base}" height="${base}" 
           viewBox="0 0 ${base} ${base}">
-      <rect x="0" y="0" width="${base}" height="${base}" fill="${fill}" fill-opacity="${opacity}"/>
+      <rect x="0" y="0" width="${w}" height="${h}" fill="${fill}" fill-opacity="${opacity}"/>
     </svg>`;
     }
 
